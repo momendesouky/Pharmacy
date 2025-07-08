@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to PharmaPlus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      color: #2c3e50;
+      overflow-x: hidden;
+    }
+
+    header {
+      background-color: #1abc9c;
+      color: white;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      animation: slideDown 1s ease forwards;
+    }
+
+    header h1 {
+      font-size: 2rem;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #f0f0f0;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3rem;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .hero-text {
+      max-width: 600px;
+    }
+
+    .hero h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      animation: slideUp 1s ease forwards;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      color: #555;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    .hero img {
+      width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      animation: popIn 1.5s ease forwards;
+    }
+
+    .cta {
+      background-color: #1abc9c;
+      color: white;
+      padding: 0.9rem 1.6rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+    }
+
+    .cta:hover {
+      background-color: #17a689;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: #f4f4f4;
+      color: #888;
+      margin-top: 4rem;
+    }
+
+    /* Animations */
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1><span>💊</span>PharmaPlus</h1>
+    <nav>
+      <a href="/login">Login</a>
+      <a href="/signup">Sign Up</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h2>Your Trusted Pharmacy</h2>
+      <p>Discover a wide range of safe, effective medicines delivered to your door. Easy browsing, secure checkout, and professional support — all in one place.</p>
+      <a class="cta" href="/signup">Sign Up and Shop Now</a>
+    </div>
+    <img src="/uploads/closeup-view-pharmacist-hand-taking-medicine-box-from-shelf-drug-store.jpg" alt="Pharmacy illustration">
+  </section>
+
+  <footer>
+    &copy; 2025 PharmaPlus. All rights reserved.
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pharmacy Inventory</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f9fc;
+      color: #2c3e50;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #1abc9c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    header a {
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    nav a:hover {
+      opacity: 0.8;
+      background: rgba(255,255,255,0.1);
+    }
+
+    .search-container {
+      padding: 1rem 2rem;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-bar {
+      width: 100%;
+      max-width: 500px;
+      padding: 0.75rem 1.25rem;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-bar:focus {
+      border-color: #1abc9c;
+      box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
+    }
+
+    main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: left;
+  padding: 2rem;
+}
+
+    .card {
+  width: 180px;               /* fixed narrow width like a book */
+  height: 380px;              /* tall height */
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.3s ease;
+}
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+.image-container {
+  width: 100%;
+  height: 240px;              /* tall image area like a cover */
+  margin-bottom: 1rem;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container img {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+}
+
+    .no-img {
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .card h2 {
+      margin: 0.5rem 0;
+      font-size: 1.2rem;
+      color: #2c3e50;
+    }
+
+    .card p {
+      margin: 0.4rem 0;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .price {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #1abc9c;
+      margin-top: auto;
+      padding-top: 0.5rem;
+    }
+
+    .btn {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn a,
+    .btn button {
+      background: #6c757d;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn .edit {
+      background: #17a2b8;
+    }
+
+    .btn .delete {
+      background: #dc3545;
+    }
+
+    .btn a:hover,
+    .btn button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .empty-msg {
+      text-align: center;
+      font-size: 1.4rem;
+      color: #888;
+      grid-column: 1 / -1;
+      padding: 3rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .no-results {
+      display: none;
+      text-align: center;
+      font-size: 1.4rem;
+      color: #888;
+      grid-column: 1 / -1;
+      padding: 3rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="#"><span>💊</span> Pharmacy Inventory</a>
+  <nav>
+    <a href="/admin/Medcines/add">Add Medicine</a>
+    <a href="/logout">Logout</a>
+  </nav>
+</header>
+
+<div class="search-container">
+  <input type="text" class="search-bar" placeholder="Search medicines by name, form, or price..." id="searchInput">
+</div>
+
+<main id="medicineGrid">
+  <% if (meds.length === 0) { %>
+    <div class="empty-msg">No medicines available yet. <a href="/admin/Medcines/add" style="color: #1abc9c;">Add your first medicine</a></div>
+  <% } else { %>
+    <% for (let med of meds) { %>
+      <div class="card" data-name="<%= med.name.toLowerCase() %>" data-form="<%= med.form.toLowerCase() %>" data-price="<%= med.price %>">
+        <% if (med.imageUrl) { %>
+          <div class="image-container">
+            <img src="<%= med.imageUrl %>" alt="<%= med.name %>">
+          </div>
+        <% } else { %>
+          <div class="image-container">
+            <div class="no-img">No Image Available</div>
+          </div>
+        <% } %>
+        <h2><%= med.name %></h2>
+        <p><strong>Form:</strong> <%= med.form %></p>
+        <p class="price"><strong>Price:</strong> <%= med.price %> $</p>
+        <div class="btn">
+          <a href="/edit/<%= med._id %>" class="edit">Edit</a>
+          <form action="/delete/<%= med._id %>" method="POST" onsubmit="return confirm('Are you sure you want to delete this medicine?');" style="display:inline;">
+            <button type="submit" class="delete">Delete</button>
+          </form>
+        </div>
+      </div>
+    <% } %>
+  <% } %>
+  <div class="no-results" id="noResults">
+    No medicines found matching your search.
+    <br>
+    <a href="/admin/Medcines/add" style="color: #1abc9c;">Add a new medicine</a>
+  </div>
+</main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const medicineGrid = document.getElementById('medicineGrid');
+    const cards = document.querySelectorAll('.card');
+    const noResults = document.getElementById('noResults');
+    const emptyMsg = document.querySelector('.empty-msg');
+
+    // Hide no-results message initially if it exists
+    if (noResults) noResults.style.display = 'none';
+    
+    // If there's no medicines, don't enable search
+    if (emptyMsg) return;
+
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      let hasResults = false;
+
+      cards.forEach(card => {
+        const name = card.dataset.name;
+        const form = card.dataset.form;
+        const price = card.dataset.price;
+        
+        // Check if search term matches name, form, or price
+        if (name.includes(searchTerm) || 
+            form.includes(searchTerm) || 
+            price.includes(searchTerm)) {
+          card.style.display = 'flex';
+          hasResults = true;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      // Show/hide no results message
+      if (noResults) {
+        noResults.style.display = hasResults ? 'none' : 'block';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
