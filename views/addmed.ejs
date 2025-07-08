@@ -7,7 +7,7 @@
   <style>
     :root {
       --primary: #1abc9c;
-      --primary-dark: #0056b3;
+      --primary-dark: #148f77;
       --bg: #f4f4f4;
       --card-bg: #fff;
       --text: #333;
@@ -27,6 +27,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     header a {
@@ -39,11 +40,8 @@
     nav {
       display: flex;
       gap: 1rem;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
     }
 
     main {
@@ -58,6 +56,7 @@
     h2 {
       text-align: center;
       margin-bottom: 1.5rem;
+      font-size: 1.8rem;
     }
 
     form {
@@ -88,6 +87,33 @@
     button:hover {
       background-color: var(--primary-dark);
     }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem;
+      }
+
+      nav {
+        justify-content: center;
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+
+      main {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      input, select, button {
+        font-size: 0.95rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -96,7 +122,7 @@
   <a href="#">💊 Pharmacy</a>
   <nav>
     <a href="/admin/Medcines">View All</a>
-    <a href="#">Logout</a>
+    <a href="/logout">Logout</a>
   </nav>
 </header>
 
@@ -106,7 +132,7 @@
     <input type="text" name="name" placeholder="Medicine Name" required />
     <input type="text" name="form" placeholder="Form (e.g., tablet, syrup)" required />
     <input type="number" name="price" step="0.01" placeholder="Price in $" required />
-    <input type="file" name="image" accept="image/*" required>
+    <input type="file" name="image" accept="image/*" required />
     <button type="submit">Add Medicine</button>
   </form>
 </main>

@@ -23,6 +23,7 @@
       color: white;
       padding: 1rem 2rem;
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -41,6 +42,8 @@
     nav {
       display: flex;
       gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
     }
 
     nav a {
@@ -82,49 +85,46 @@
     }
 
     main {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: left;
-  padding: 2rem;
-}
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
 
     .card {
-  width: 180px;               /* fixed narrow width like a book */
-  height: 380px;              /* tall height */
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: 0.3s ease;
-}
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: 0.3s ease;
+    }
 
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
 
-.image-container {
-  width: 100%;
-  height: 240px;              /* tall image area like a cover */
-  margin-bottom: 1rem;
-  overflow: hidden;
-  border-radius: 8px;
-  background: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    .image-container {
+      width: 100%;
+      height: 240px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-.image-container img {
-  height: 100%;
-  width: auto;
-  object-fit: cover;
-}
+    .image-container img {
+      height: 100%;
+      width: auto;
+      object-fit: cover;
+    }
 
     .no-img {
       font-size: 0.9rem;
@@ -135,6 +135,7 @@
       margin: 0.5rem 0;
       font-size: 1.2rem;
       color: #2c3e50;
+      text-align: center;
     }
 
     .card p {
@@ -180,6 +181,14 @@
       background: #dc3545;
     }
 
+    .btn .add {
+      background: #1abc9c;
+    }
+
+    .btn .view {
+      background: #3498db;
+    }
+
     .btn a:hover,
     .btn button:hover {
       opacity: 0.9;
@@ -208,33 +217,39 @@
       border-radius: 12px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-    .btn .add {
-  background: #1abc9c;
-}
 
-.btn .view {
-  background: #3498db;
-}
-footer .pagination a {
-    color: #007bff;
-    text-decoration: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin: 0 4px;
-  }
+    footer .pagination {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 2rem auto;
+    }
 
-  footer .pagination span {
-    padding: 6px 12px;
-    border: 1px solid #000;
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    margin: 0 4px;
-  }
+    footer .pagination a {
+      color: #007bff;
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
-  footer .pagination a:hover {
-    background-color: #e0e0e0;
-  }
+    footer .pagination span {
+      padding: 6px 12px;
+      border: 1px solid #000;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+    }
+
+    footer .pagination a:hover {
+      background-color: #e0e0e0;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -246,7 +261,7 @@ footer .pagination a {
     <a href="/cart">🛒Cart</a>
     <a href="/logout">Logout</a>
     <% if (role ==="ADMIN") { %>
-     <a href="/admin/Medcines">Admin Panel</a>
+      <a href="/admin/Medcines">Admin Panel</a>
     <% } %>
   </nav>
 </header>
@@ -273,31 +288,28 @@ footer .pagination a {
         <h2><%= med.name %></h2>
         <p><strong>Form:</strong> <%= med.form %></p>
         <p class="price"><strong>Price:</strong> <%= med.price %> $</p>
-          <div class="btn">
-        <form method="POST" action="/cart/add/<%= med._id %>">
-          <button type="submit" class="add">🛒 Add to Cart</button>
-        </form>
-        <a href="#" class="view">🔍 View Details</a>
-      </div>
+        <div class="btn">
+          <form method="POST" action="/cart/add/<%= med._id %>">
+            <button type="submit" class="add">🛒 Add to Cart</button>
+          </form>
+          <a href="#" class="view">🔍 View Details</a>
+        </div>
       </div>
     <% } %>
   <% } %>
   <div class="no-results" id="noResults">
     No medicines found matching your search.
-    <br>
+  </div>
 </main>
+
 <footer>
   <% if (totalPages > 1) { %>
-    <nav class="pagination" style="display: flex; justify-content: center; gap: 8px;">
+    <nav class="pagination">
       <% for (let i = 1; i <= totalPages; i++) { %>
         <% if (i === currentPage) { %>
-          <span style="padding: 6px 12px; border: 1px solid #000; background-color: #f0f0f0; border-radius: 4px;">
-            <%= i %>
-          </span>
+          <span><%= i %></span>
         <% } else { %>
-          <a href="/user/Medcines?page=<%= i %>" style="padding: 6px 12px; border: 1px solid #ccc; border-radius: 4px; text-decoration: none; color: #007bff;">
-            Page <%= i %>
-          </a>
+          <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a>
         <% } %>
       <% } %>
     </nav>
@@ -305,20 +317,16 @@ footer .pagination a {
 </footer>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('searchInput');
-    const medicineGrid = document.getElementById('medicineGrid');
     const cards = document.querySelectorAll('.card');
     const noResults = document.getElementById('noResults');
     const emptyMsg = document.querySelector('.empty-msg');
 
-    // Hide no-results message initially if it exists
     if (noResults) noResults.style.display = 'none';
-    
-    // If there's no medicines, don't enable search
     if (emptyMsg) return;
 
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function () {
       const searchTerm = this.value.toLowerCase();
       let hasResults = false;
 
@@ -326,11 +334,8 @@ footer .pagination a {
         const name = card.dataset.name;
         const form = card.dataset.form;
         const price = card.dataset.price;
-        
-        // Check if search term matches name, form, or price
-        if (name.includes(searchTerm) || 
-            form.includes(searchTerm) || 
-            price.includes(searchTerm)) {
+
+        if (name.includes(searchTerm) || form.includes(searchTerm) || price.includes(searchTerm)) {
           card.style.display = 'flex';
           hasResults = true;
         } else {
@@ -338,10 +343,7 @@ footer .pagination a {
         }
       });
 
-      // Show/hide no results message
-      if (noResults) {
-        noResults.style.display = hasResults ? 'none' : 'block';
-      }
+      if (noResults) noResults.style.display = hasResults ? 'none' : 'block';
     });
   });
 </script>

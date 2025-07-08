@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- ✅ Responsive fix -->
   <title><%= username %> Cart</title>
   <style>
     body {
@@ -11,7 +12,6 @@
       padding: 0;
     }
 
-    /* Pharmacy header */
     .pharmacy-header {
       background-color: #1abc9c;
       color: white;
@@ -19,6 +19,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
@@ -29,6 +30,7 @@
 
     .pharmacy-header .user {
       font-size: 16px;
+      margin-top: 8px;
     }
 
     h1 {
@@ -37,15 +39,21 @@
       margin: 30px 0 10px;
     }
 
-    table {
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 20px auto;
       width: 90%;
       max-width: 900px;
-      margin: 20px auto;
+    }
+
+    table {
+      width: 100%;
       border-collapse: collapse;
       background: white;
       border-radius: 10px;
       overflow: hidden;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      min-width: 600px;
     }
 
     th, td {
@@ -73,11 +81,14 @@
       background: #f1f1f1;
       font-size: 16px;
     }
-   td.total  {
+
+    td.total {
       font-weight: bold;
       background: #1abc9c;
       font-size: 16px;
+      color: white;
     }
+
     a.checkout-btn {
       display: block;
       width: fit-content;
@@ -101,13 +112,41 @@
       font-size: 18px;
       margin-top: 40px;
     }
+
+    /* ✅ Responsive for small screens */
+    @media (max-width: 768px) {
+      .pharmacy-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+      }
+
+      .pharmacy-header .user {
+        margin-top: 10px;
+        font-size: 14px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin: 20px 0;
+      }
+
+      table {
+        font-size: 14px;
+      }
+
+      a.checkout-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <!-- Pharmacy Header -->
   <div class="pharmacy-header">
-    <h2><span>💊</span>PharmaPlus</h2> <!-- Change this to your pharmacy name -->
+    <h2><span>💊</span>PharmaPlus</h2>
     <div class="user">Logged in as: <strong><%= username %></strong></div>
   </div>
 
@@ -116,36 +155,38 @@
   <% if (cartItems.length === 0) { %>
     <p class="empty">Your cart is empty.</p>
   <% } else { %>
-    <table>
-      <thead>
-        <tr>
-          <th>Medicine</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% let total = 0; %>
-        <% cartItems.forEach(item => { %>
+    <div class="table-wrapper">
+      <table>
+        <thead>
           <tr>
-            <td><%= item.medId.name %></td>
-            <td><%= item.quantity %></td>
-            <td>$<%= item.medId.price.toFixed(2) %></td>
-            <td>
-              $<%= (item.quantity * item.medId.price).toFixed(2) %>
-              <% total += item.quantity * item.medId.price; %>
-            </td>
+            <th>Medicine</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
           </tr>
-        <% }) %>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td  style ="color: white" class="total" colspan="3">Total</td>
-          <td style ="background-color: white" >$<%= total.toFixed(2) %></td>
-        </tr>
-      </tfoot>
-    </table>
+        </thead>
+        <tbody>
+          <% let total = 0; %>
+          <% cartItems.forEach(item => { %>
+            <tr>
+              <td><%= item.medId.name %></td>
+              <td><%= item.quantity %></td>
+              <td>$<%= item.medId.price.toFixed(2) %></td>
+              <td>
+                $<%= (item.quantity * item.medId.price).toFixed(2) %>
+                <% total += item.quantity * item.medId.price; %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td class="total" colspan="3">Total</td>
+            <td>$<%= total.toFixed(2) %></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   <% } %>
 
   <a href="#" class="checkout-btn">Proceed to Checkout</a>

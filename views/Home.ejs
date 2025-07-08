@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- ✅ MOBILE FIX -->
   <title>Welcome to PharmaPlus</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
@@ -26,6 +27,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
       animation: slideDown 1s ease forwards;
     }
 
@@ -47,14 +49,18 @@
 
     .hero {
       display: flex;
+      flex-direction: row;
       justify-content: space-between;
       align-items: center;
       padding: 3rem;
+      gap: 2rem;
+      flex-wrap: wrap; /* ✅ wrap for smaller screens */
       animation: fadeIn 1.5s ease-in-out;
     }
 
     .hero-text {
       max-width: 600px;
+      flex: 1;
     }
 
     .hero h2 {
@@ -72,9 +78,12 @@
 
     .hero img {
       width: 400px;
+      max-width: 100%;
+      height: auto;
       border-radius: 12px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       animation: popIn 1.5s ease forwards;
+      flex: 1;
     }
 
     .cta {
@@ -100,6 +109,41 @@
       background: #f4f4f4;
       color: #888;
       margin-top: 4rem;
+    }
+
+    /* 🎯 Responsive Layout */
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .hero-text {
+        max-width: 100%;
+      }
+
+      .hero h2 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      header {
+        padding: 1rem;
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav {
+        margin-top: 1rem;
+      }
+
+      nav a {
+        margin: 0 1rem;
+      }
     }
 
     /* Animations */

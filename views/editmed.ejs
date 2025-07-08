@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Book</title>
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Medicine</title>
+  <style>
     :root {
       --primary: #1abc9c;
-      --primary-dark: #0056b3;
+      --primary-dark: #148f77;
       --bg: #f4f4f4;
       --card-bg: #fff;
       --text: #333;
@@ -27,6 +27,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     header a {
@@ -39,6 +40,8 @@
     nav {
       display: flex;
       gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
     }
 
     nav a {
@@ -58,6 +61,7 @@
     h2 {
       text-align: center;
       margin-bottom: 1.5rem;
+      font-size: 1.8rem;
     }
 
     form {
@@ -88,9 +92,36 @@
     button:hover {
       background-color: var(--primary-dark);
     }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        justify-content: center;
+        width: 100%;
+        margin-top: 0.5rem;
+      }
+
+      main {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      button {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
+
 <header>
   <a href="#">💊 Pharmacy</a>
   <nav>
@@ -98,18 +129,17 @@
     <a href="#">Logout</a>
   </nav>
 </header>
+
 <main>
   <h2>Edit Medicine</h2>
   <form action="/edit/<%= mte._id %>" method="POST" enctype="multipart/form-data">
-    <input type="text" name="name" value="<%= mte.name %>"  placeholder="Medicine Name"/>
-    <input type="text" name="form" value="<%= mte.form %>" placeholder="Form (e.g., tablet, syrup)"  />
-    <input type="number" name="price" value="<%= mte.price %>" step="0.01" placeholder="Price in $"  />
+    <input type="text" name="name" value="<%= mte.name %>" placeholder="Medicine Name" required />
+    <input type="text" name="form" value="<%= mte.form %>" placeholder="Form (e.g., tablet, syrup)" required />
+    <input type="number" name="price" value="<%= mte.price %>" step="0.01" placeholder="Price in $" required />
     <input type="file" name="image" accept="image/*">
     <button type="submit">Edit Medicine</button>
   </form>
 </main>
 
-</body>
-</html>
 </body>
 </html>
