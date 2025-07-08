@@ -67,11 +67,11 @@ app.get("/signup",(request,response)=>{
 app.post("/signup", async (request, response) => {
 const { username, email, password,} = request.body;
 if (!username || !email || !password) {
-    return response.render("signup.ejs", { error: "All fields are required." });
+    return response.render("signup.ejs", {massage:null,error: "All fields are required." });
   }
 
   if (password.length < 6) {
-    return response.render("signup.ejs", { error: "Password must be at least 6 characters." });
+    return response.render("signup.ejs", {massage:null, error: "Password must be at least 6 characters." });
   }
   const existingUser=await User.findOne({username});
   if(existingUser){
