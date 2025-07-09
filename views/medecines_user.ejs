@@ -23,10 +23,10 @@
       color: white;
       padding: 1rem 2rem;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      flex-wrap: wrap;
     }
 
     header a {
@@ -43,7 +43,6 @@
       display: flex;
       gap: 1.5rem;
       flex-wrap: wrap;
-      margin-top: 0.5rem;
     }
 
     nav a {
@@ -86,7 +85,7 @@
 
     main {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1.5rem;
       padding: 2rem;
     }
@@ -135,7 +134,6 @@
       margin: 0.5rem 0;
       font-size: 1.2rem;
       color: #2c3e50;
-      text-align: center;
     }
 
     .card p {
@@ -195,7 +193,8 @@
       transform: translateY(-1px);
     }
 
-    .empty-msg {
+    .empty-msg,
+    .no-results {
       text-align: center;
       font-size: 1.4rem;
       color: #888;
@@ -208,22 +207,13 @@
 
     .no-results {
       display: none;
-      text-align: center;
-      font-size: 1.4rem;
-      color: #888;
-      grid-column: 1 / -1;
-      padding: 3rem;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     footer .pagination {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
       gap: 8px;
-      margin: 2rem auto;
+      margin-bottom: 2rem;
     }
 
     footer .pagination a {
@@ -245,9 +235,17 @@
       background-color: #e0e0e0;
     }
 
-    @media (max-width: 600px) {
-      .card {
-        max-width: 100%;
+    @media screen and (max-width: 480px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
       }
     }
   </style>
@@ -297,7 +295,7 @@
       </div>
     <% } %>
   <% } %>
-  <div class="no-results" id="noResults">
+  <div class="no-results" id="noResults" style="text-align: center;">
     No medicines found matching your search.
   </div>
 </main>
@@ -317,7 +315,7 @@
 </footer>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const cards = document.querySelectorAll('.card');
     const noResults = document.getElementById('noResults');
@@ -326,7 +324,7 @@
     if (noResults) noResults.style.display = 'none';
     if (emptyMsg) return;
 
-    searchInput.addEventListener('input', function () {
+    searchInput.addEventListener('input', function() {
       const searchTerm = this.value.toLowerCase();
       let hasResults = false;
 
@@ -343,7 +341,9 @@
         }
       });
 
-      if (noResults) noResults.style.display = hasResults ? 'none' : 'block';
+      if (noResults) {
+        noResults.style.display = hasResults ? 'none' : 'block';
+      }
     });
   });
 </script>
