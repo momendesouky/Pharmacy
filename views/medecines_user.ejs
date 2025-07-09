@@ -83,12 +83,12 @@
       box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
     }
 
-    main {
+main {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-  max-width: 1000px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -211,31 +211,37 @@
       display: none;
     }
 
-    footer .pagination {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 2rem;
-    }
+   footer .pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;               /* allows breaking on smaller screens only */
+  gap: 8px;
+  margin-top: 2rem;
+}
 
-    footer .pagination a {
-      color: #007bff;
-      text-decoration: none;
-      padding: 6px 12px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+footer .pagination a,
+footer .pagination span {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  font-size: 0.95rem;
+  color: #007bff;
+  background: #fff;
+  white-space: nowrap;          /* keeps links from breaking in half */
+  transition: background 0.2s;
+}
 
-    footer .pagination span {
-      padding: 6px 12px;
-      border: 1px solid #000;
-      background-color: #f0f0f0;
-      border-radius: 4px;
-    }
+footer .pagination a:hover {
+  background-color: #e6f0ff;
+}
 
-    footer .pagination a:hover {
-      background-color: #e0e0e0;
-    }
+footer .pagination span {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  border-color: #aaa;
+  color: #000;
+}
 
     @media screen and (max-width: 480px) {
       header {
