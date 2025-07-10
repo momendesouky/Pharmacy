@@ -204,21 +204,25 @@
       background-color: #dc3545;
       color: white;
     }
+  nav.show {
+  display: flex !important;
+  flex-direction: column;
+}
   </style>
 </head>
 <body>
 
-  <header>
+  <header class="pharmacy-header">
     <div class="logo">
-      <a href="/"><span>💊</span> PharmaPlus</a>
-    </div>
+    <a href="/"><span>💊</span> PharmaPlus</a>
+  </div>
 
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
 
-    <nav id="nav-links">
-      <a href="/user/Medcines">Back to Inventory</a>
-      <a href="/logout">Logout</a>
-    </nav>
+  <nav id="nav-links">
+    <a href="/user/Medcines">Back to Inventory</a>
+    <a href="/logout">Logout</a>
+  </nav>
   </header>
 
   <h1>Your Cart</h1>
@@ -273,9 +277,9 @@
   <a href="#" class="checkout-btn">Proceed to Checkout</a>
 <script>
   function toggleMenu() {
-      const nav = document.getElementById("mainNav");
-      nav.classList.toggle("show");
-    }
+    const nav = document.getElementById("nav-links");
+    nav.classList.toggle("show");
+  }
 
 </script>
 </body>
