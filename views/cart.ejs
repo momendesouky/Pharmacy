@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- ✅ Responsive fix -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= username %> Cart</title>
   <style>
     body {
@@ -12,25 +12,71 @@
       padding: 0;
     }
 
-    .pharmacy-header {
+     header {
       background-color: #1abc9c;
       color: white;
-      padding: 15px 40px;
+      padding: 15px 30px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
       flex-wrap: wrap;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
 
-    .pharmacy-header h2 {
-      margin: 0;
-      font-size: 24px;
+    header .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
     }
 
-    .pharmacy-header .user {
-      font-size: 16px;
-      margin-top: 8px;
+    header .hamburger {
+      font-size: 1.8rem;
+      cursor: pointer;
+      display: none; /* Hidden on desktop */
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      header .hamburger {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 30px;
+      }
+
+      nav {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        background-color: #1abc9c;
+        margin-top: 10px;
+      }
+
+      nav a {
+        padding: 10px 20px;
+        border-top: 1px solid rgba(255,255,255,0.3);
+      }
+
+      nav.show {
+        display: flex;
+      }
     }
 
     h1 {
@@ -113,7 +159,7 @@
       margin-top: 40px;
     }
 
-    /* ✅ Responsive for small screens */
+    /* Responsive */
     @media (max-width: 768px) {
       .pharmacy-header {
         flex-direction: column;
@@ -140,15 +186,40 @@
         font-size: 14px;
       }
     }
+
+    .add-btn, .delete-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background-color: #1abc9c;
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Pharmacy Header -->
-  <div class="pharmacy-header">
-    <h2><span>💊</span>PharmaPlus</h2>
-    <div class="user">Logged in as: <strong><%= username %></strong></div>
-  </div>
+  <header>
+    <div class="logo">
+      <a href="/"><span>💊</span> PharmaPlus</a>
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+    <nav id="nav-links">
+      <a href="/user/Medcines">Back to Inventory</a>
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
 
   <h1>Your Cart</h1>
 
@@ -163,26 +234,36 @@
             <th>Quantity</th>
             <th>Price</th>
             <th>Subtotal</th>
+            <th>Features</th>
           </tr>
         </thead>
         <tbody>
           <% let total = 0; %>
-          <% cartItems.forEach(item => { %>
+          <% cartItems.forEach(item => {
+               if (!item.medId) return; // Skip broken entries
+               const subtotal = item.quantity * item.medId.price;
+               total += subtotal;
+          %>
             <tr>
               <td><%= item.medId.name %></td>
               <td><%= item.quantity %></td>
               <td>$<%= item.medId.price.toFixed(2) %></td>
+              <td>$<%= subtotal.toFixed(2) %></td>
               <td>
-                $<%= (item.quantity * item.medId.price).toFixed(2) %>
-                <% total += item.quantity * item.medId.price; %>
+                <form method="post" action="/cart/add/<%= item.medId._id %>" style="display: inline;">
+                  <button title="Add one" class="add-btn">➕</button>
+                </form>
+                <form method="post" action="/cart/delete/<%= item.medId._id %>" style="display: inline;">
+                  <button title="Remove one" class="delete-btn">🗑️</button>
+                </form>
               </td>
             </tr>
-          <% }) %>
+          <% }); %>
         </tbody>
         <tfoot>
           <tr>
-            <td class="total" colspan="3">Total</td>
-            <td>$<%= total.toFixed(2) %></td>
+            <td class="total" colspan="4">Total</td>
+            <td class="total">$<%= total.toFixed(2) %></td>
           </tr>
         </tfoot>
       </table>
@@ -190,5 +271,6 @@
   <% } %>
 
   <a href="#" class="checkout-btn">Proceed to Checkout</a>
+
 </body>
 </html>

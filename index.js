@@ -9,7 +9,6 @@ require("dotenv").config();
 const User=require("./models/User");
 const Med=require("./models/medcine");
 const cart=require("./models/Cart");
-const fetch = require("node-fetch");
 const authorizeRole = require("./middlewares/authorizeRoles");
 const authenticate=require("./middlewares/Authenticate");
 app.use(cors());
@@ -156,7 +155,6 @@ app.get("/cart",authenticate,authorizeRole("USER"), async (req, res) => {
     const userCart = await cart.findOne({ username }).populate("items.medId");
     const cartItems = userCart ? userCart.items : [];
     res.render("cart.ejs", { username, cartItems, error: null });
-
   } catch (err) {
     console.error(err);
     res.render("cart.ejs", { username: req.user?.username || "", cartItems: [], error: "Failed to load cart." });
@@ -167,7 +165,6 @@ app.post("/cart/add/:medid",authenticate,authorizeRole("USER"), async (req, res)
   try {
     const mta = req.params.medid;
     const username = req.user.username;
-
     let userCart = await cart.findOne({ username });
 
     if (!userCart) {
@@ -197,7 +194,29 @@ app.post("/cart/add/:medid",authenticate,authorizeRole("USER"), async (req, res)
     res.status(500).send("Failed to add item to cart.");
   }
 });
-
+app.get("/viewDetails/:id",async(req,res)=>{
+const mtv_id=req.params.id;
+const mtv=await Med.findById(mtv_id);
+res.render("view_details.ejs",{mtv,error:null});
+})
+app.post("/cart/delete/:id",authenticate,authorizeRole("USER","ADMIN"),async(req,res)=>{
+const mtd_id=req.params.id;
+const username = req.user.username;
+let userCart = await cart.findOne({ username });
+const existingItem = userCart.items.find(item =>
+  item.medId && item.medId.toString() === mtd_id)
+if (existingItem) {
+    if (existingItem.quantity > 1) {
+      existingItem.quantity -= 1; // Decrease quantity
+    } else {
+      userCart.items = userCart.items.filter(item =>
+        item.medId.toString() !== mtd_id
+      );
+    }
+    await userCart.save();
+  }
+  res.redirect("/cart");
+});
 app.get("/logout",(req,res)=>{
   res.clearCookie("token");
   res.redirect("/login");

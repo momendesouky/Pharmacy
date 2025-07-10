@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Details of <%= mtv.name %></title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+    }
+
+    /* Header */
+    header {
+      background-color: #1abc9c;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    header .logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    header .hamburger {
+      font-size: 1.8rem;
+      cursor: pointer;
+      display: none; /* Hidden on desktop */
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      header .hamburger {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 30px;
+      }
+
+      nav {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        background-color: #1abc9c;
+        margin-top: 10px;
+      }
+
+      nav a {
+        padding: 10px 20px;
+        border-top: 1px solid rgba(255,255,255,0.3);
+      }
+
+      nav.show {
+        display: flex;
+      }
+    }
+
+    /* Main content */
+    main {
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .Medcontainer {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .medimage img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .medname {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .medform, .medprice {
+      font-size: 1.2rem;
+      margin: 10px 0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <a href="/"><span>💊</span> PharmaPlus</a>
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+    <nav id="nav-links">
+      <a href="/user/Medcines">Back to Inventory</a>
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="Medcontainer">
+      <% if (mtv.imageUrl) { %>
+        <div class="medimage">
+          <img src="<%= mtv.imageUrl %>" alt="Medicine image">
+        </div> 
+      <% } %>
+      <div class="medname"><%= mtv.name %></div> 
+      <div class="medform"><strong>Form:</strong> <%= mtv.form %></div> 
+      <div class="medprice"><strong>Price:</strong> $<%= mtv.price %></div> 
+    </div>
+  </main>
+
+  <!-- TOGGLE SCRIPT -->
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById("nav-links");
+      nav.classList.toggle("show");
+    }
+  </script>
+
+</body>
+</html>

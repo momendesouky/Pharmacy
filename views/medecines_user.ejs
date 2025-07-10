@@ -25,8 +25,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       flex-wrap: wrap;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: relative;
     }
 
     header a {
@@ -59,6 +60,13 @@
       background: rgba(255,255,255,0.1);
     }
 
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: white;
+    }
+
     .search-container {
       padding: 1rem 2rem;
       background: white;
@@ -83,14 +91,14 @@
       box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
     }
 
-main {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem 1rem;
-  max-width: 1400px;
-  margin: 0 auto;
-}
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem 1rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
 
     .card {
       padding: 1rem;
@@ -173,21 +181,10 @@ main {
       transition: all 0.2s ease;
     }
 
-    .btn .edit {
-      background: #17a2b8;
-    }
-
-    .btn .delete {
-      background: #dc3545;
-    }
-
-    .btn .add {
-      background: #1abc9c;
-    }
-
-    .btn .view {
-      background: #3498db;
-    }
+    .btn .edit { background: #17a2b8; }
+    .btn .delete { background: #dc3545; }
+    .btn .add { background: #1abc9c; }
+    .btn .view { background: #3498db; }
 
     .btn a:hover,
     .btn button:hover {
@@ -211,150 +208,175 @@ main {
       display: none;
     }
 
-   footer .pagination {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;               /* allows breaking on smaller screens only */
-  gap: 8px;
-  margin-top: 2rem;
-}
+    footer .pagination {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2rem;
+    }
 
-footer .pagination a,
-footer .pagination span {
-  padding: 6px 12px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  text-decoration: none;
-  font-size: 0.95rem;
-  color: #007bff;
-  background: #fff;
-  white-space: nowrap;          /* keeps links from breaking in half */
-  transition: background 0.2s;
-}
+    footer .pagination a,
+    footer .pagination span {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      text-decoration: none;
+      font-size: 0.95rem;
+      color: #007bff;
+      background: #fff;
+      white-space: nowrap;
+      margin-bottom: 60px;
+      transition: background 0.2s;
+    }
 
-footer .pagination a:hover {
-  background-color: #e6f0ff;
-}
+    footer .pagination a:hover {
+      background-color: #e6f0ff;
+    }
 
-footer .pagination span {
-  font-weight: bold;
-  background-color: #f0f0f0;
-  border-color: #aaa;
-  color: #000;
-}
+    footer .pagination span {
+      font-weight: bold;
+      background-color: #f0f0f0;
+      border-color: #aaa;
+      color: #000;
+    }
 
-    @media screen and (max-width: 480px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+    @media screen and (max-width: 768px) {
+      .hamburger {
+        display: block;
+        position: absolute;
+        right: 1.5rem;
+        top: 1.2rem;
       }
 
       nav {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
+        width: 100%;
+        display: none;
+        background-color: #1abc9c;
+        margin-top: 10px;
+      }
+
+      nav a {
+        padding: 10px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      nav.show {
+        display: flex;
       }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <a href="#"><span>💊</span> Pharmacy Inventory</a>
-  <nav>
-    <a href="#">Browse</a>
-    <a href="/cart">🛒Cart</a>
-    <a href="/logout">Logout</a>
-    <% if (role ==="ADMIN") { %>
-      <a href="/admin/Medcines">Admin Panel</a>
-    <% } %>
-  </nav>
-</header>
-
-<div class="search-container">
-  <input type="text" class="search-bar" placeholder="Search medicines by name, form, or price..." id="searchInput">
-</div>
-
-<main id="medicineGrid">
-  <% if (meds.length === 0) { %>
-    <div class="empty-msg">No medicines available yet. <a href="/admin/Medcines/add" style="color: #1abc9c;">Add your first medicine</a></div>
-  <% } else { %>
-    <% for (let med of meds) { %>
-      <div class="card" data-name="<%= med.name.toLowerCase() %>" data-form="<%= med.form.toLowerCase() %>" data-price="<%= med.price %>">
-        <% if (med.imageUrl) { %>
-          <div class="image-container">
-            <img src="<%= med.imageUrl %>" alt="<%= med.name %>">
-          </div>
-        <% } else { %>
-          <div class="image-container">
-            <div class="no-img">No Image Available</div>
-          </div>
-        <% } %>
-        <h2><%= med.name %></h2>
-        <p><strong>Form:</strong> <%= med.form %></p>
-        <p class="price"><strong>Price:</strong> <%= med.price %> $</p>
-        <div class="btn">
-          <form method="POST" action="/cart/add/<%= med._id %>">
-            <button type="submit" class="add">🛒 Add to Cart</button>
-          </form>
-          <a href="#" class="view">🔍 View Details</a>
-        </div>
-      </div>
-    <% } %>
-  <% } %>
-  <div class="no-results" id="noResults" style="text-align: center;">
-    No medicines found matching your search.
-  </div>
-</main>
-
-<footer>
-  <% if (totalPages > 1) { %>
-    <nav class="pagination">
-      <% for (let i = 1; i <= totalPages; i++) { %>
-        <% if (i === currentPage) { %>
-          <span><%= i %></span>
-        <% } else { %>
-          <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a>
-        <% } %>
+  <!-- Header with Hamburger -->
+  <header>
+    <a href="#"><span>💊</span> Pharmacy Inventory</a>
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <nav id="mainNav">
+      <a href="#">Browse</a>
+      <a href="/cart">🛒Cart</a>
+      <a href="/logout">Logout</a>
+      <% if (role === "ADMIN") { %>
+        <a href="/admin/Medcines">Admin Panel</a>
       <% } %>
     </nav>
-  <% } %>
-</footer>
+  </header>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchInput');
-    const cards = document.querySelectorAll('.card');
-    const noResults = document.getElementById('noResults');
-    const emptyMsg = document.querySelector('.empty-msg');
+  <!-- Search -->
+  <div class="search-container">
+    <input type="text" class="search-bar" placeholder="Search medicines by name, form, or price..." id="searchInput">
+  </div>
 
-    if (noResults) noResults.style.display = 'none';
-    if (emptyMsg) return;
+  <!-- Inventory Grid -->
+  <main id="medicineGrid">
+    <% if (meds.length === 0) { %>
+      <div class="empty-msg">No medicines available yet. <a href="/admin/Medcines/add" style="color: #1abc9c;">Add your first medicine</a></div>
+    <% } else { %>
+      <% for (let med of meds) { %>
+        <div class="card" data-name="<%= med.name.toLowerCase() %>" data-form="<%= med.form.toLowerCase() %>" data-price="<%= med.price %>">
+          <% if (med.imageUrl) { %>
+            <div class="image-container">
+              <img src="<%= med.imageUrl %>" alt="<%= med.name %>">
+            </div>
+          <% } else { %>
+            <div class="image-container">
+              <div class="no-img">No Image Available</div>
+            </div>
+          <% } %>
+          <h2><%= med.name %></h2>
+          <p><strong>Form:</strong> <%= med.form %></p>
+          <p class="price"><strong>Price:</strong> <%= med.price %> $</p>
+          <div class="btn">
+            <form method="POST" action="/cart/add/<%= med._id %>">
+              <button type="submit" class="add">🛒 Add to Cart</button>
+            </form>
+            <a href="/viewDetails/<%= med._id %>" class="view">🔍 View Details</a>
+          </div>
+        </div>
+      <% } %>
+    <% } %>
 
-    searchInput.addEventListener('input', function() {
-      const searchTerm = this.value.toLowerCase();
-      let hasResults = false;
+    <div class="no-results" id="noResults">
+      No medicines found matching your search.
+    </div>
+  </main>
 
-      cards.forEach(card => {
-        const name = card.dataset.name;
-        const form = card.dataset.form;
-        const price = card.dataset.price;
+  <!-- Pagination -->
+  <footer>
+    <% if (totalPages > 1) { %>
+      <nav class="pagination">
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <% if (i === currentPage) { %>
+            <span><%= i %></span>
+          <% } else { %>
+            <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a>
+          <% } %>
+        <% } %>
+      </nav>
+    <% } %>
+  </footer>
 
-        if (name.includes(searchTerm) || form.includes(searchTerm) || price.includes(searchTerm)) {
-          card.style.display = 'flex';
-          hasResults = true;
-        } else {
-          card.style.display = 'none';
+  <!-- Scripts -->
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById("mainNav");
+      nav.classList.toggle("show");
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const cards = document.querySelectorAll('.card');
+      const noResults = document.getElementById('noResults');
+      const emptyMsg = document.querySelector('.empty-msg');
+
+      if (noResults) noResults.style.display = 'none';
+      if (emptyMsg) return;
+
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        let hasResults = false;
+
+        cards.forEach(card => {
+          const name = card.dataset.name;
+          const form = card.dataset.form;
+          const price = card.dataset.price;
+
+          if (name.includes(searchTerm) || form.includes(searchTerm) || price.includes(searchTerm)) {
+            card.style.display = 'flex';
+            hasResults = true;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (noResults) {
+          noResults.style.display = hasResults ? 'none' : 'block';
         }
       });
-
-      if (noResults) {
-        noResults.style.display = hasResults ? 'none' : 'block';
-      }
     });
-  });
-</script>
+  </script>
 
 </body>
 </html>
