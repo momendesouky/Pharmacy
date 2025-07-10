@@ -234,9 +234,9 @@
 
   <main id="main">
     <form action="/signup" method="POST">
-        <% if (massage) { %>
-         <h3 style="color: red;"><%= massage %></h3>
-        <% } %>
+        <% if (error) { %>
+  <h3 style="color: red;"><%= error %></h3>
+<% } %>
       <input type="text" name="username" placeholder="Username" required />
       <input type="email" name="email" placeholder="Email" required />
       <input type="password" name="password" placeholder="Password" required />

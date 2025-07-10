@@ -60,8 +60,7 @@ app.post("/login",async(request,response)=>{
   }
 });
 app.get("/signup",(request,response)=>{
-  const massage=request.query.massage||null;
-    response.render("signup.ejs",{massage,error:null});
+    response.render("signup.ejs",{error:null});
 })
 app.post("/signup", async (request, response) => {
 const { username, email, password,} = request.body;
@@ -74,7 +73,7 @@ if (!username || !email || !password) {
   }
   const existingUser=await User.findOne({username});
   if(existingUser){
-    return response.redirect("/signup?massage=Username Already exists")
+    return response.render("signup.ejs",{error:"User Already Exists"});
   }
   //hashing password
   const hashedPss=await bcrypt.hash(password,10);
