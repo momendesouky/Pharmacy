@@ -214,7 +214,7 @@ footer {
 }
 
 footer .custom-pagination {
-  display: inline-flex;
+  display: flex;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
@@ -261,6 +261,19 @@ footer .custom-pagination span {
 
 
   @media (max-width: 768px) {
+    footer .custom-pagination {
+    flex-wrap: nowrap !important;         /* ✅ Don't allow wrapping */
+    overflow-x: auto !important;          /* ✅ Enable horizontal scroll */
+    justify-content: center !important;   /* ✅ Keep centered */
+    align-items: center !important;
+  }
+
+  footer .custom-pagination a,
+  footer .custom-pagination span {
+    display: inline-flex !important;      /* ✅ Inline alignment */
+    flex-shrink: 0 !important;            /* ✅ Prevent shrinking or stacking */
+    white-space: nowrap !important;
+  }
     .hamburger {
       display: block;
       position: absolute;
