@@ -215,9 +215,9 @@ footer {
 
 footer .custom-pagination {
   display: inline-flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  flex-wrap: nowrap;
   gap: 10px;
   overflow-x: auto;
   background: none;
@@ -234,7 +234,7 @@ footer .custom-pagination::-webkit-scrollbar {
 
 footer .custom-pagination a,
 footer .custom-pagination span {
-  display: inline-block; /* ✅ FIX: Prevent full-width block behavior */
+  display: inline-flex; /* ✅ FIX: Prevent full-width block behavior */
   flex: 0 0 auto;
   padding: 8px 14px;
   border-radius: 6px;
