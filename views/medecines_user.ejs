@@ -214,16 +214,18 @@ footer {
 }
 
 footer .custom-pagination {
-  display: inline-flex;        /* Show in a row */
-  flex-wrap: nowrap;          /* Prevent stacking */
-  overflow-x: auto;           /* Scroll on overflow */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
   gap: 10px;
-  padding: 0.5rem 1rem;
+  overflow-x: auto;
+  background: none;
+  padding: 0.5rem;
+  border: none;
   margin: 0 auto;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   scrollbar-width: none;
+  max-width: 100%;
 }
 
 footer .custom-pagination::-webkit-scrollbar {
@@ -232,14 +234,15 @@ footer .custom-pagination::-webkit-scrollbar {
 
 footer .custom-pagination a,
 footer .custom-pagination span {
+  display: inline-block; /* ✅ FIX: Prevent full-width block behavior */
   flex: 0 0 auto;
-  padding: 8px 16px;
+  padding: 8px 14px;
   border-radius: 6px;
   border: 1px solid #ccc;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: #007bff;
-  background: #ffffff;
+  background: #fff;
   white-space: nowrap;
   transition: background 0.2s ease;
 }
@@ -254,6 +257,7 @@ footer .custom-pagination span {
   border-color: #aaa;
   color: #000;
 }
+
 
 
   @media (max-width: 768px) {
@@ -347,7 +351,7 @@ footer .custom-pagination span {
         <% if (i === currentPage) { %>
           <span><%= i %></span>
         <% } else { %>
-          <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a>
+          <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a> 
         <% } %>
       <% } %>
     </nav>
