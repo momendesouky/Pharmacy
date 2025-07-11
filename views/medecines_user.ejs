@@ -207,51 +207,52 @@
   .no-results {
     display: none;
   }
+footer {
+  background-color: #f7f9fc;
+  padding: 2rem 1rem;
+  text-align: center;
+}
 
-  footer {
-    background-color: #f7f9fc;
-    padding-bottom: 2rem;
-  }
+footer .pagination {
+  display: inline-flex;        /* ✅ Lay items in a row, shrink to fit */
+  flex-wrap: nowrap;          /* ✅ Prevent stacking */
+  overflow-x: auto;           /* ✅ Enable horizontal scroll if needed */
+  gap: 10px;
+  padding: 0.5rem 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  scrollbar-width: none;
+}
 
-  footer .pagination {
-    display: flex;
-    flex-wrap: nowrap;          /* ✅ Keep in a row */
-    overflow-x: auto;           /* ✅ Enable horizontal scroll */
-    gap: 8px;
-    justify-content: center;
-    padding: 1rem;
-    margin-top: 2rem;
-    scrollbar-width: none;      /* Firefox */
-  }
+footer .pagination::-webkit-scrollbar {
+  display: none;
+}
 
-  footer .pagination::-webkit-scrollbar {
-    display: none;              /* Chrome/Safari */
-  }
+footer .pagination a,
+footer .pagination span {
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  text-decoration: none;
+  font-size: 0.95rem;
+  color: #007bff;
+  background-color: #fff;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
 
-  footer .pagination a,
-  footer .pagination span {
-    flex: 0 0 auto;             /* Prevent wrapping */
-    padding: 8px 14px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    text-decoration: none;
-    font-size: 1rem;
-    color: #007bff;
-    background: #fff;
-    white-space: nowrap;
-    transition: background 0.2s;
-  }
+footer .pagination a:hover {
+  background-color: #e6f0ff;
+}
 
-  footer .pagination a:hover {
-    background-color: #e6f0ff;
-  }
-
-  footer .pagination span {
-    font-weight: bold;
-    background-color: #f0f0f0;
-    border-color: #aaa;
-    color: #000;
-  }
+footer .pagination span {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  border-color: #aaa;
+  color: #000;
+}
 
   @media (max-width: 768px) {
     .hamburger {
