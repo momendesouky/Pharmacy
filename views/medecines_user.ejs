@@ -213,46 +213,48 @@ footer {
   text-align: center;
 }
 
-footer .pagination {
-  display: inline-flex;        /* ✅ Lay items in a row, shrink to fit */
-  flex-wrap: nowrap;          /* ✅ Prevent stacking */
-  overflow-x: auto;           /* ✅ Enable horizontal scroll if needed */
+footer .custom-pagination {
+  display: inline-flex;        /* Show in a row */
+  flex-wrap: nowrap;          /* Prevent stacking */
+  overflow-x: auto;           /* Scroll on overflow */
   gap: 10px;
   padding: 0.5rem 1rem;
+  margin: 0 auto;
   background: #ffffff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   scrollbar-width: none;
 }
 
-footer .pagination::-webkit-scrollbar {
+footer .custom-pagination::-webkit-scrollbar {
   display: none;
 }
 
-footer .pagination a,
-footer .pagination span {
+footer .custom-pagination a,
+footer .custom-pagination span {
   flex: 0 0 auto;
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 6px;
   border: 1px solid #ccc;
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #007bff;
-  background-color: #fff;
+  background: #ffffff;
   white-space: nowrap;
   transition: background 0.2s ease;
 }
 
-footer .pagination a:hover {
+footer .custom-pagination a:hover {
   background-color: #e6f0ff;
 }
 
-footer .pagination span {
+footer .custom-pagination span {
   font-weight: bold;
   background-color: #f0f0f0;
   border-color: #aaa;
   color: #000;
 }
+
 
   @media (max-width: 768px) {
     .hamburger {
@@ -338,19 +340,19 @@ footer .pagination span {
   </main>
 
   <!-- Pagination -->
-  <footer >
-    <% if (totalPages > 1) { %>
-      <nav class="pagination">
-        <% for (let i = 1; i <= totalPages; i++) { %>
-          <% if (i === currentPage) { %>
-            <span><%= i %></span>
-          <% } else { %>
-            <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a>
-          <% } %>
+  <footer>
+  <% if (totalPages > 1) { %>
+    <nav class="custom-pagination">
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <% if (i === currentPage) { %>
+          <span><%= i %></span>
+        <% } else { %>
+          <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a>
         <% } %>
-      </nav>
-    <% } %>
-  </footer>
+      <% } %>
+    </nav>
+  <% } %>
+</footer>
 
   <!-- Scripts -->
   <script>
