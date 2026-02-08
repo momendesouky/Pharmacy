@@ -2,140 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Medicine</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <style>
     :root {
-      --primary: #1abc9c;
-      --primary-dark: #148f77;
-      --bg: #f4f4f4;
-      --card-bg: #fff;
-      --text: #333;
+      --brand: #1abc9c;
+      --brand-dark: #148f77;
     }
 
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-    }
-
-    header {
-      background-color: var(--primary);
-      color: white;
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    header a {
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-      font-size: 1.2rem;
+      background-color: #f4f6f8;
     }
 
     nav {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-top: 0.5rem;
+      background-color: var(--brand);
     }
 
-    main {
-      max-width: 500px;
-      margin: 2rem auto;
-      background: var(--card-bg);
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .card-panel {
+      border-radius: 16px;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
+      animation: slideIn 0.6s ease;
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      font-size: 1.8rem;
+    .btn {
+      background-color: var(--brand);
     }
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .btn:hover {
+      background-color: var(--brand-dark);
     }
 
-    input, select {
-      padding: 0.9rem;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+    .input-field input:focus + label {
+      color: var(--brand) !important;
     }
 
-    button {
-      padding: 0.9rem;
-      font-size: 1rem;
-      font-weight: bold;
-      color: white;
-      background-color: var(--primary);
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s;
+    .input-field input:focus {
+      border-bottom: 1px solid var(--brand) !important;
+      box-shadow: 0 1px 0 0 var(--brand) !important;
     }
 
-    button:hover {
-      background-color: var(--primary-dark);
-    }
-
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1.5rem;
-      }
-
-      nav {
-        justify-content: center;
-        width: 100%;
-        margin-top: 0.5rem;
-      }
-
-      main {
-        margin: 1rem;
-        padding: 1.5rem;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-      }
-
-      input, select, button {
-        font-size: 0.95rem;
-      }
+    @keyframes slideIn {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
-
-<header>
-  <a href="#">💊 Pharmacy</a>
   <nav>
-    <a href="/admin/Medcines">View All</a>
-    <a href="/logout">Logout</a>
+    <div class="nav-wrapper container">
+      <a href="/admin/Medcines" class="brand-logo">💊 Pharmacy</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/admin/Medcines">View All</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
   </nav>
-</header>
 
-<main>
-  <h2>Add New Medicine</h2>
-  <form action="/admin/medcines/add" method="POST" enctype="multipart/form-data">
-    <input type="text" name="name" placeholder="Medicine Name" required />
-    <input type="text" name="form" placeholder="Form (e.g., tablet, syrup)" required />
-    <input type="number" name="price" step="0.01" placeholder="Price in $" required />
-    <input type="file" name="image" accept="image/*" required />
-    <button type="submit">Add Medicine</button>
-  </form>
-</main>
+  <main class="container">
+    <div class="row">
+      <div class="col s12 m10 l6 offset-m1 offset-l3">
+        <div class="card-panel white">
+          <h4 class="center-align">Add New Medicine</h4>
+          <form action="/admin/medcines/add" method="POST" enctype="multipart/form-data">
+            <div class="input-field">
+              <i class="material-icons prefix">medication</i>
+              <input id="name" type="text" name="name" required />
+              <label for="name">Medicine Name</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">science</i>
+              <input id="form" type="text" name="form" required />
+              <label for="form">Form (tablet, syrup)</label>
+            </div>
+            <div class="input-field">
+              <i class="material-icons prefix">attach_money</i>
+              <input id="price" type="number" name="price" step="0.01" required />
+              <label for="price">Price in $</label>
+            </div>
+            <div class="file-field input-field">
+              <div class="btn">
+                <span>Image</span>
+                <input type="file" name="image" accept="image/*" required />
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text" placeholder="Upload medicine image" />
+              </div>
+            </div>
+            <div class="center-align">
+              <button class="btn-large waves-effect waves-light" type="submit">
+                <i class="material-icons left">add_circle</i>
+                Add Medicine
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>
