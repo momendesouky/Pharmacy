@@ -194,6 +194,40 @@ app.post("/cart/add/:medid",authenticate,authorizeRole("USER"), async (req, res)
     res.status(500).send("Failed to add item to cart.");
   }
 });
+app.post("/cart/addfrominvetory/:medid",authenticate,authorizeRole("USER"), async (req, res) => {
+  try {
+    const mta = req.params.medid;
+    const username = req.user.username;
+    let userCart = await cart.findOne({ username });
+
+    if (!userCart) {
+      userCart = new cart({
+        username,
+        items: [{ medId: mta, quantity: 1 }],
+        totalQuantity: 1
+      });
+    } else {
+      const existingItem = userCart.items.find(item =>
+  item.medId && item.medId.toString() === mta
+);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        userCart.items.push({ medId: mta, quantity: 1 });
+      }
+
+      userCart.totalQuantity = userCart.items.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    await userCart.save();
+    res.redirect("/cart")
+
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Failed to add item to cart.");
+  }
+});
 app.get("/viewDetails/:id",async(req,res)=>{
 const mtv_id=req.params.id;
 const mtv=await Med.findById(mtv_id);
