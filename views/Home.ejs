@@ -31,7 +31,11 @@
       --bg-end: #111827;
       --text: #e5e7eb;
       --card: #1f2937;
+    
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      color: #2c3e50;
     }
+
 
     nav {
       background-color: var(--brand);
@@ -41,6 +45,7 @@
       padding: 4rem 0 2rem;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 2rem;
       align-items: center;
     }
@@ -53,10 +58,10 @@
 
     .hero-subtitle {
       color: color-mix(in srgb, var(--text) 70%, #ffffff 30%);
+      color: #566573;
       font-size: 1.1rem;
       margin-bottom: 2rem;
     }
-
     .hero-visual {
       height: 320px;
       border-radius: 18px;
@@ -132,7 +137,13 @@
       position: relative;
       z-index: 2;
     }
-
+    .hero-image {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(0);
+      animation: float 6s ease-in-out infinite;
+    }
     .feature-card {
       border-radius: 16px;
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
@@ -141,6 +152,8 @@
       gap: 1rem;
       align-items: flex-start;
       background: var(--card);
+      background: #fff;
+
     }
 
     .feature-card i {
@@ -150,7 +163,6 @@
     .cta-btn {
       background-color: var(--brand);
     }
-
     .cta-btn:hover {
       background-color: var(--brand-dark);
     }
@@ -179,6 +191,16 @@
     @keyframes pulse {
       0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.9; }
       100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+      color: #8e9eab;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-12px);
+      }
     }
   </style>
 </head>
@@ -213,6 +235,8 @@
         <span class="blob three"></span>
         <span class="pulse-ring"></span>
         <i class="material-icons hero-icon">health_and_safety</i>
+      <div>
+        <img class="hero-image" src="https://images.unsplash.com/photo-1580281658629-20b3f4c3a1c9?auto=format&fit=crop&w=800&q=80" alt="Pharmacy shelves">
       </div>
     </section>
 

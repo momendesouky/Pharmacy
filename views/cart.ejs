@@ -55,7 +55,6 @@
     .checkout-btn:hover {
       background-color: var(--brand-dark);
     }
-
     .qty-actions {
       display: flex;
       align-items: center;
@@ -90,6 +89,10 @@
       background: var(--danger);
     }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
@@ -148,6 +151,15 @@
                       </button>
                     </form>
                   </div>
+                <td>$<%= med.price || 0 %></td>
+                <td><%= item.quantity %></td>
+                <td>$<%= subtotal.toFixed(2) %></td>
+                <td>
+                  <form action="/cart/delete/<%= med._id %>" method="POST">
+                    <button class="btn-flat red-text" type="submit">
+                      <i class="material-icons left">remove_circle</i>Remove
+                    </button>
+                  </form>
                 </td>
               </tr>
             <% }) %>
@@ -161,6 +173,7 @@
         </div>
         <div class="center-align" style="margin-top: 2rem;">
           <a href="#" class="btn-large waves-effect waves-light checkout-btn">
+          <a href="/checkout" class="btn-large waves-effect waves-light checkout-btn">
             <i class="material-icons left">shopping_cart_checkout</i>
             Checkout
           </a>

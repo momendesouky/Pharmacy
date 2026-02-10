@@ -88,7 +88,12 @@
       gap: 4px;
       padding: 0 10px !important;
     }
+    
 
+    @keyframes rise {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -165,6 +170,5 @@
       syncThemeLabel();
     }
   </script>
-
 </body>
 </html>
