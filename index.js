@@ -186,7 +186,8 @@ app.post("/cart/add/:medid",authenticate,authorizeRole("USER"), async (req, res)
     }
 
     await userCart.save();
-    res.redirect("/cart");
+    res.json({ success: true });
+
 
   } catch (err) {
     console.error(err);
@@ -214,7 +215,8 @@ if (existingItem) {
     }
     await userCart.save();
   }
-  res.redirect("/cart");
+  res.json({ success: true });
+
 });
 app.get("/logout",(req,res)=>{
   res.clearCookie("token");

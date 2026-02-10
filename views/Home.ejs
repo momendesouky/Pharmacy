@@ -217,7 +217,6 @@
       </ul>
     </div>
   </nav>
-
   <main class="container">
     <section class="hero">
       <div>
@@ -239,7 +238,6 @@
         <img class="hero-image" src="https://images.unsplash.com/photo-1580281658629-20b3f4c3a1c9?auto=format&fit=crop&w=800&q=80" alt="Pharmacy shelves">
       </div>
     </section>
-
     <section class="section">
       <div class="row">
         <div class="col s12 m6">
@@ -263,18 +261,15 @@
       </div>
     </section>
   </main>
-
   <footer>
     Built with care for PharmaPlus customers.
   </footer>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script>
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
     const label = themeToggle.querySelector('span');
     const icon = themeToggle.querySelector('i');
-
     function syncThemeLabel() {
       const dark = body.classList.contains('dark');
       label.textContent = dark ? 'Light' : 'Dark';

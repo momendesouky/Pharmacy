@@ -99,6 +99,24 @@
     }
   </style>
 </head>
+<script async>
+async function addToCart(id){
+    await fetch(`/cart/add/${id}`, {
+        method: "POST"
+    });
+
+    location.reload(); // simplest refresh
+}
+
+async function removeFromCart(id){
+    await fetch(`/cart/delete/${id}`, {
+        method: "POST"
+    });
+
+    location.reload();
+}
+</script>
+
 <body>
   <nav>
     <div class="nav-wrapper container">
@@ -140,27 +158,18 @@
                 <td>$<%= subtotal.toFixed(2) %></td>
                 <td>
                   <div class="qty-actions">
-                    <form action="/cart/add/<%= med._id %>" method="POST" style="display: inline;">
-                      <button class="qty-btn plus" title="Add one" type="submit">
-                        <i class="material-icons tiny">add</i>&nbsp;Add
-                      </button>
-                    </form>
-                    <form action="/cart/delete/<%= med._id %>" method="POST" style="display: inline;">
-                      <button class="qty-btn minus" title="Remove one" type="submit">
-                        <i class="material-icons tiny">remove</i>&nbsp;Remove
-                      </button>
-                    </form>
+                    <button class="qty-btn plus"
+                        onclick="addToCart('<%= med._id %>')">
+                       <i class="material-icons tiny">add</i>
+                  </button>
+                    <button class="qty-btn minus"
+                        onclick="removeFromCart('<%= med._id %>')">
+                        <i class="material-icons tiny">remove</i>
+                    </button>
                   </div>
                 <td>$<%= med.price || 0 %></td>
                 <td><%= item.quantity %></td>
                 <td>$<%= subtotal.toFixed(2) %></td>
-                <td>
-                  <form action="/cart/delete/<%= med._id %>" method="POST">
-                    <button class="btn-flat red-text" type="submit">
-                      <i class="material-icons left">remove_circle</i>Remove
-                    </button>
-                  </form>
-                </td>
               </tr>
             <% }) %>
           </tbody>
