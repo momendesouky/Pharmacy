@@ -4,156 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Details of <%= mtv.name %></title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <style>
+    :root {
+      --brand: #1abc9c;
+      --brand-dark: #148f77;
+    }
+
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
       background-color: #f6f6f6;
     }
 
-    /* Header */
-    header {
-      background-color: #1abc9c;
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      position: relative;
-    }
-
-    header .logo a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    header .hamburger {
-      font-size: 1.8rem;
-      cursor: pointer;
-      display: none; /* Hidden on desktop */
-    }
-
     nav {
-      display: flex;
-      gap: 20px;
+      background-color: var(--brand);
     }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
+    .detail-card {
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      animation: fadeUp 0.6s ease;
     }
 
-    /* Mobile */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      header .hamburger {
-        display: block;
-        position: absolute;
-        top: 15px;
-        right: 30px;
-      }
-
-      nav {
-        flex-direction: column;
-        width: 100%;
-        display: none;
-        background-color: #1abc9c;
-        margin-top: 10px;
-      }
-
-      nav a {
-        padding: 10px 20px;
-        border-top: 1px solid rgba(255,255,255,0.3);
-      }
-
-      nav.show {
-        display: flex;
-      }
-    }
-
-    /* Main content */
-    main {
-      padding: 40px 20px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .Medcontainer {
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 30px;
-      max-width: 500px;
+    .detail-image {
       width: 100%;
-      text-align: center;
+      border-radius: 14px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     }
 
-    .medimage img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 20px;
+    .price-chip {
+      background: rgba(26, 188, 156, 0.15);
+      color: #1a7f6b;
+      font-weight: 600;
     }
 
-    .medname {
-      font-size: 1.8rem;
-      font-weight: bold;
-      margin-bottom: 10px;
-      color: #333;
+    .btn {
+      background-color: var(--brand);
     }
 
-    .medform, .medprice {
-      font-size: 1.2rem;
-      margin: 10px 0;
-      color: #555;
+    .btn:hover {
+      background-color: var(--brand-dark);
+    }
+
+    @keyframes fadeUp {
+      from { transform: translateY(16px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
-
-  <!-- HEADER -->
-  <header>
-    <div class="logo">
-      <a href="/"><span>💊</span> PharmaPlus</a>
+  <nav>
+    <div class="nav-wrapper container">
+      <a href="/" class="brand-logo">💊 PharmaPlus</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/user/Medcines">Inventory</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
     </div>
+  </nav>
 
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-
-    <nav id="nav-links">
-      <a href="/user/Medcines">Back to Inventory</a>
-      <a href="/logout">Logout</a>
-    </nav>
-  </header>
-
-  <!-- MAIN CONTENT -->
-  <main>
-    <div class="Medcontainer">
-      <% if (mtv.imageUrl) { %>
-        <div class="medimage">
-          <img src="<%= mtv.imageUrl %>" alt="Medicine image">
-        </div> 
-      <% } %>
-      <div class="medname"><%= mtv.name %></div> 
-      <div class="medform"><strong>Form:</strong> <%= mtv.form %></div> 
-      <div class="medprice"><strong>Price:</strong> $<%= mtv.price %></div> 
+  <main class="container section">
+    <div class="row">
+      <div class="col s12 m10 l8 offset-m1 offset-l2">
+        <div class="detail-card white center-align">
+          <% if (mtv.imageUrl) { %>
+            <img class="detail-image" src="<%= mtv.imageUrl %>" alt="Medicine image">
+          <% } %>
+          <h4><%= mtv.name %></h4>
+          <p class="flow-text"><strong>Form:</strong> <%= mtv.form %></p>
+          <span class="new badge price-chip" data-badge-caption="$"><%= mtv.price %></span>
+          <div class="section"></div>
+          <a href="/user/Medcines" class="btn waves-effect waves-light">
+            <i class="material-icons left">arrow_back</i>
+            Back to Inventory
+          </a>
+        </div>
+      </div>
     </div>
   </main>
 
-  <!-- TOGGLE SCRIPT -->
-  <script>
-    function toggleMenu() {
-      const nav = document.getElementById("nav-links");
-      nav.classList.toggle("show");
-    }
-  </script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>
