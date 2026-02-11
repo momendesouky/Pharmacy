@@ -4,412 +4,117 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pharmacy Inventory</title>
- <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <style>
+    :root {
+      --brand: #1abc9c;
+      --brand-dark: #148f77;
+    }
 
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f7f9fc;
-    color: #2c3e50;
-    min-height: 100vh;
-  }
-
-  header {
-    background-color: #1abc9c;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-  }
-
-  header a {
-    font-size: 1.5rem;
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  nav {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  nav a {
-    color: white;
-    font-size: 1rem;
-    text-decoration: none;
-    transition: opacity 0.2s ease;
-    padding: 0.5rem;
-    border-radius: 4px;
-  }
-
-  nav a:hover {
-    opacity: 0.8;
-    background: rgba(255,255,255,0.1);
-  }
-
-  .hamburger {
-    display: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: white;
-  }
-
-  .search-container {
-    padding: 1rem 2rem;
-    background: white;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    display: flex;
-    justify-content: center;
-  }
-
-  .search-bar {
-    width: 100%;
-    max-width: 500px;
-    padding: 0.75rem 1.25rem;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    font-size: 1rem;
-    outline: none;
-    transition: all 0.3s ease;
-  }
-
-  .search-bar:focus {
-    border-color: #1abc9c;
-    box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.2);
-  }
-
-  main {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    padding: 2rem 1rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .card {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: 0.3s ease;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  }
-
-  .image-container {
-    width: 100%;
-    height: 240px;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    border-radius: 8px;
-    background: #eee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .image-container img {
-    height: 100%;
-    width: auto;
-    object-fit: cover;
-  }
-
-  .no-img {
-    font-size: 0.9rem;
-    color: #999;
-  }
-
-  .card h2 {
-    margin: 0.5rem 0;
-    font-size: 1.2rem;
-    color: #2c3e50;
-  }
-
-  .card p {
-    margin: 0.4rem 0;
-    font-size: 0.95rem;
-    color: #555;
-  }
-
-  .price {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #1abc9c;
-    margin-top: auto;
-    padding-top: 0.5rem;
-  }
-
-  .btn {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-  }
-
-  .btn a,
-  .btn button {
-    background: #6c757d;
-    color: white;
-    padding: 6px 12px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .btn .edit { background: #17a2b8; }
-  .btn .delete { background: #dc3545; }
-  .btn .add { background: #1abc9c; }
-  .btn .view { background: #3498db; }
-
-  .btn a:hover,
-  .btn button:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-  }
-
-  .empty-msg,
-  .no-results {
-    text-align: center;
-    font-size: 1.4rem;
-    color: #888;
-    grid-column: 1 / -1;
-    padding: 3rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .no-results {
-    display: none;
-  }
-footer {
-  background-color: #f7f9fc;
-  padding: 2rem 1rem;
-  text-align: center;
-}
-
-footer .custom-pagination {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  overflow-x: auto;
-  background: none;
-  padding: 0.5rem;
-  border: none;
-  margin: 0 auto;
-  scrollbar-width: none;
-  max-width: 100%;
-}
-
-footer .custom-pagination::-webkit-scrollbar {
-  display: none;
-}
-
-footer .custom-pagination a,
-footer .custom-pagination span {
-  display: inline-flex; /* ✅ FIX: Prevent full-width block behavior */
-  flex: 0 0 auto;
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  text-decoration: none;
-  font-size: 0.95rem;
-  color: #007bff;
-  background: #fff;
-  white-space: nowrap;
-  transition: background 0.2s ease;
-}
-
-footer .custom-pagination a:hover {
-  background-color: #e6f0ff;
-}
-
-footer .custom-pagination span {
-  font-weight: bold;
-  background-color: #f0f0f0;
-  border-color: #aaa;
-  color: #000;
-}
-
-
-
-  @media (max-width: 768px) {
-    footer .custom-pagination {
-    flex-wrap: nowrap !important;         /* ✅ Don't allow wrapping */
-    overflow-x: auto !important;          /* ✅ Enable horizontal scroll */
-    justify-content: center !important;   /* ✅ Keep centered */
-    align-items: center !important;
-  }
-
-  footer .custom-pagination a,
-  footer .custom-pagination span {
-    display: inline-flex !important;      /* ✅ Inline alignment */
-    flex-shrink: 0 !important;            /* ✅ Prevent shrinking or stacking */
-    white-space: nowrap !important;
-  }
-    .hamburger {
-      display: block;
-      position: absolute;
-      right: 1.5rem;
-      top: 1.2rem;
+    body {
+      background: #f7f9fc;
     }
 
     nav {
-      flex-direction: column;
-      width: 100%;
-      display: none;
-      background-color: #1abc9c;
-      margin-top: 10px;
+      background-color: var(--brand);
     }
 
-    nav a {
-      padding: 10px 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    .medicine-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
+      animation: fadeUp 0.5s ease;
     }
 
-    nav.show {
-      display: flex;
+    .medicine-card .card-image img {
+      height: 220px;
+      object-fit: cover;
     }
-  }
-</style>
 
+    .price-chip {
+      background: rgba(26, 188, 156, 0.15);
+      color: #1a7f6b;
+      font-weight: 600;
+    }
+
+    .btn {
+      background-color: var(--brand);
+    }
+
+    .btn:hover {
+      background-color: var(--brand-dark);
+    }
+
+    .pagination li.active {
+      background-color: var(--brand);
+    }
+
+    @keyframes fadeUp {
+      from { transform: translateY(14px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
+  <nav>
+    <div class="nav-wrapper container">
+      <a href="/user/Medcines" class="brand-logo">💊 PharmaPlus</a>
+      <ul class="right hide-on-med-and-down">
+        <% if (role === 'ADMIN') { %>
+          <li><a href="/admin/Medcines">Admin Panel</a></li>
+        <% } %>
+        <li><a href="/cart"><i class="material-icons left">shopping_cart</i>Cart</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
 
-  <!-- Header with Hamburger -->
-  <header>
-    <a href="#"><span>💊</span> Pharmacy Inventory</a>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <nav id="mainNav">
-      <a href="#">Browse</a>
-      <a href="/cart">🛒Cart</a>
-      <a href="/logout">Logout</a>
-      <% if (role === "ADMIN") { %>
-        <a href="/admin/Medcines">Admin Panel</a>
-      <% } %>
-    </nav>
-  </header>
-
-  <!-- Search -->
-  <div class="search-container">
-    <input type="text" class="search-bar" placeholder="Search medicines by name, form, or price..." id="searchInput">
-  </div>
-
-  <!-- Inventory Grid -->
-  <main id="medicineGrid">
-    <% if (meds.length === 0) { %>
-      <div class="empty-msg">No medicines available yet. <a href="/admin/Medcines/add" style="color: #1abc9c;">Add your first medicine</a></div>
-    <% } else { %>
-      <% for (let med of meds) { %>
-        <div class="card" data-name="<%= med.name.toLowerCase() %>" data-form="<%= med.form.toLowerCase() %>" data-price="<%= med.price %>">
-          <% if (med.imageUrl) { %>
-            <div class="image-container">
-              <img src="<%= med.imageUrl %>" alt="<%= med.name %>">
+  <main class="container section">
+    <div class="row">
+      <% meds.forEach(med => { %>
+        <div class="col s12 m6 l4">
+          <div class="card medicine-card">
+            <div class="card-image">
+              <% if (med.imageUrl) { %>
+                <img src="<%= med.imageUrl %>" alt="<%= med.name %>">
+              <% } else { %>
+                <img src="https://images.unsplash.com/photo-1584017911766-d451b3d0e843?auto=format&fit=crop&w=800&q=80" alt="No image">
+              <% } %>
+              <span class="card-title"><%= med.name %></span>
             </div>
-          <% } else { %>
-            <div class="image-container">
-              <div class="no-img">No Image Available</div>
+            <div class="card-content">
+              <p><strong>Form:</strong> <%= med.form %></p>
+              <div class="section">
+                <span class="new badge price-chip" data-badge-caption="$"><%= med.price %></span>
+              </div>
             </div>
-          <% } %>
-          <h2><%= med.name %></h2>
-          <p><strong>Form:</strong> <%= med.form %></p>
-          <p class="price"><strong>Price:</strong> <%= med.price %> $</p>
-          <div class="btn">
-            <form method="POST" action="/cart/add/<%= med._id %>">
-              <button type="submit" class="add">🛒 Add to Cart</button>
-            </form>
-            <a href="/viewDetails/<%= med._id %>" class="view">🔍 View Details</a>
+            <div class="card-action">
+              <a href="/viewDetails/<%= med._id %>"><i class="material-icons left">visibility</i>Details</a>
+              <form action="/cart/add/<%= med._id %>" method="POST" style="display: inline;">
+                <button class="btn-flat" type="submit">
+                  <i class="material-icons left">add_shopping_cart</i>Add
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      <% } %>
-    <% } %>
-
-    <div class="no-results" id="noResults">
-      No medicines found matching your search.
+      <% }) %>
     </div>
+
+    <ul class="pagination center-align">
+      <li class="<%= currentPage === 1 ? 'disabled' : 'waves-effect' %>">
+        <a href="/user/Medcines?page=<%= currentPage - 1 %>"><i class="material-icons">chevron_left</i></a>
+      </li>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="<%= currentPage === i ? 'active' : 'waves-effect' %>"><a href="/user/Medcines?page=<%= i %>"><%= i %></a></li>
+      <% } %>
+      <li class="<%= currentPage === totalPages ? 'disabled' : 'waves-effect' %>">
+        <a href="/user/Medcines?page=<%= currentPage + 1 %>"><i class="material-icons">chevron_right</i></a>
+      </li>
+    </ul>
   </main>
 
-  <!-- Pagination -->
-  <footer>
-  <% if (totalPages > 1) { %>
-    <nav class="custom-pagination">
-      <% for (let i = 1; i <= totalPages; i++) { %>
-        <% if (i === currentPage) { %>
-          <span><%= i %></span>
-        <% } else { %>
-          <a href="/user/Medcines?page=<%= i %>">Page <%= i %></a> 
-        <% } %>
-      <% } %>
-    </nav>
-  <% } %>
-</footer>
-
-  <!-- Scripts -->
-  <script>
-    function toggleMenu() {
-      const nav = document.getElementById("mainNav");
-      nav.classList.toggle("show");
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchInput = document.getElementById('searchInput');
-      const cards = document.querySelectorAll('.card');
-      const noResults = document.getElementById('noResults');
-      const emptyMsg = document.querySelector('.empty-msg');
-
-      if (noResults) noResults.style.display = 'none';
-      if (emptyMsg) return;
-
-      searchInput.addEventListener('input', function() {
-        const searchTerm = this.value.toLowerCase();
-        let hasResults = false;
-
-        cards.forEach(card => {
-          const name = card.dataset.name;
-          const form = card.dataset.form;
-          const price = card.dataset.price;
-
-          if (name.includes(searchTerm) || form.includes(searchTerm) || price.includes(searchTerm)) {
-            card.style.display = 'flex';
-            hasResults = true;
-          } else {
-            card.style.display = 'none';
-          }
-        });
-
-        if (noResults) {
-          noResults.style.display = hasResults ? 'none' : 'block';
-        }
-      });
-    });
-  </script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>

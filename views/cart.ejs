@@ -4,283 +4,173 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= username %> Cart</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <style>
+    :root {
+      --brand: #1abc9c;
+      --brand-dark: #148f77;
+      --danger: #e53935;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #f4f6f8;
-      margin: 0;
-      padding: 0;
-    }
-
-     header {
-      background-color: #1abc9c;
-      color: white;
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      position: relative;
-    }
-
-    header .logo a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-
-    header .hamburger {
-      font-size: 1.8rem;
-      cursor: pointer;
-      display: none; /* Hidden on desktop */
     }
 
     nav {
-      display: flex;
-      gap: 20px;
+      background-color: var(--brand);
     }
 
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
+    .cart-card {
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
+      animation: fadeIn 0.6s ease;
     }
 
-    /* Mobile */
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      header .hamburger {
-        display: block;
-        position: absolute;
-        top: 15px;
-        right: 30px;
-      }
-
-      nav {
-        flex-direction: column;
-        width: 100%;
-        display: none;
-        background-color: #1abc9c;
-        margin-top: 10px;
-      }
-
-      nav a {
-        padding: 10px 20px;
-        border-top: 1px solid rgba(255,255,255,0.3);
-      }
-
-      nav.show {
-        display: flex;
-      }
+    table thead {
+      background: rgba(26, 188, 156, 0.1);
     }
 
-    h1 {
-      text-align: center;
-      color: #333;
-      margin: 30px 0 10px;
-    }
-
-    .table-wrapper {
-      overflow-x: auto;
-      margin: 20px auto;
-      width: 90%;
-      max-width: 900px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-      min-width: 600px;
-    }
-
-    th, td {
-      padding: 14px 20px;
-      border-bottom: 1px solid #eee;
-      text-align: center;
-    }
-
-    th {
-      background-color: #1abc9c;
-      color: white;
+    table thead th {
+      color: #1a7f6b;
       font-weight: 600;
     }
 
-    td {
-      color: #333;
+    .total-chip {
+      background: var(--brand);
+      color: #fff;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
-    tbody tr:hover {
-      background-color: #f9f9f9;
+    .checkout-btn {
+      background-color: var(--brand);
     }
 
-    tfoot td {
-      font-weight: bold;
-      background: #f1f1f1;
-      font-size: 16px;
+    .checkout-btn:hover {
+      background-color: var(--brand-dark);
     }
 
-    td.total {
-      font-weight: bold;
-      background: #1abc9c;
-      font-size: 16px;
-      color: white;
+    .qty-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
     }
 
-    a.checkout-btn {
-      display: block;
-      width: fit-content;
-      margin: 30px auto;
-      text-decoration: none;
-      background: #28a745;
-      color: white;
-      padding: 12px 30px;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    a.checkout-btn:hover {
-      background: #218838;
-    }
-
-    p.empty {
-      text-align: center;
-      color: #777;
-      font-size: 18px;
-      margin-top: 40px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .pharmacy-header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
-      }
-
-      .pharmacy-header .user {
-        margin-top: 10px;
-        font-size: 14px;
-      }
-
-      h1 {
-        font-size: 20px;
-        margin: 20px 0;
-      }
-
-      table {
-        font-size: 14px;
-      }
-
-      a.checkout-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-      }
-    }
-
-    .add-btn, .delete-btn {
-      padding: 6px 12px;
+    .qty-btn {
       border: none;
-      border-radius: 4px;
-      font-size: 1rem;
+      border-radius: 6px;
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
       cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    .add-btn {
-      background-color: #1abc9c;
-      color: white;
+    .qty-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
     }
 
-    .delete-btn {
-      background-color: #dc3545;
-      color: white;
+    .qty-btn.plus {
+      background: var(--brand);
     }
-  nav.show {
-  display: flex !important;
-  flex-direction: column;
-}
+
+    .qty-btn.minus {
+      background: var(--danger);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-
-  <header class="pharmacy-header">
-    <div class="logo">
-    <a href="/"><span>💊</span> PharmaPlus</a>
-  </div>
-
-  <div class="hamburger" onclick="toggleMenu()">☰</div>
-
-  <nav id="nav-links">
-    <a href="/user/Medcines">Back to Inventory</a>
-    <a href="/logout">Logout</a>
-  </nav>
-  </header>
-
-  <h1>Your Cart</h1>
-
-  <% if (cartItems.length === 0) { %>
-    <p class="empty">Your cart is empty.</p>
-  <% } else { %>
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Medicine</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Subtotal</th>
-            <th>Features</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% let total = 0; %>
-          <% cartItems.forEach(item => {
-               if (!item.medId) return; // Skip broken entries
-               const subtotal = item.quantity * item.medId.price;
-               total += subtotal;
-          %>
-            <tr>
-              <td><%= item.medId.name %></td>
-              <td><%= item.quantity %></td>
-              <td>$<%= item.medId.price.toFixed(2) %></td>
-              <td>$<%= subtotal.toFixed(2) %></td>
-              <td>
-                <form method="post" action="/cart/add/<%= item.medId._id %>" style="display: inline;">
-                  <button title="Add one" class="add-btn">➕</button>
-                </form>
-                <form method="post" action="/cart/delete/<%= item.medId._id %>" style="display: inline;">
-                  <button title="Remove one" class="delete-btn">🗑️</button>
-                </form>
-              </td>
-            </tr>
-          <% }); %>
-        </tbody>
-        <tfoot>
-          <tr>
-            <td class="total" colspan="4">Total</td>
-            <td class="total">$<%= total.toFixed(2) %></td>
-          </tr>
-        </tfoot>
-      </table>
+  <nav>
+    <div class="nav-wrapper container">
+      <a href="/user/Medcines" class="brand-logo">💊 Pharmacy</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/user/Medcines">Inventory</a></li>
+        <li><a href="/logout">Logout</a></li>
+      </ul>
     </div>
-  <% } %>
+  </nav>
 
-  <a href="#" class="checkout-btn">Proceed to Checkout</a>
-<script>
-  function toggleMenu() {
-    const nav = document.getElementById("nav-links");
-    nav.classList.toggle("show");
-  }
+  <main class="container section">
+    <h4 class="center-align">Your Cart</h4>
+    <div class="cart-card white">
+      <% if (cartItems && cartItems.length) { %>
+        <table class="highlight responsive-table">
+          <thead>
+            <tr>
+              <th>Medicine</th>
+              <th>Form</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Subtotal</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% let total = 0; %>
+            <% cartItems.forEach(item => { %>
+              <% const med = item.medId || {}; %>
+              <% if (!med._id) return; %>
+              <% const subtotal = (med.price || 0) * item.quantity; %>
+              <% total += subtotal; %>
+              <tr>
+                <td><%= med.name || 'Unknown' %></td>
+                <td><%= med.form || '-' %></td>
+                <td>$<%= Number(med.price || 0).toFixed(2) %></td>
+                <td><%= item.quantity %></td>
+                <td>$<%= subtotal.toFixed(2) %></td>
+                <td>
+                  <div class="qty-actions">
+                    <form action="/cart/add/<%= med._id %>" method="POST" style="display: inline;">
+                      <button class="qty-btn plus" title="Add one" type="submit">
+                        <i class="material-icons tiny">add</i>&nbsp;Add
+                      </button>
+                    </form>
+                    <form action="/cart/delete/<%= med._id %>" method="POST" style="display: inline;">
+                      <button class="qty-btn minus" title="Remove one" type="submit">
+                        <i class="material-icons tiny">remove</i>&nbsp;Remove
+                      </button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <div class="right-align" style="margin-top: 1.5rem;">
+          <span class="total-chip">
+            <i class="material-icons">payments</i>
+            Total: $<%= total.toFixed(2) %>
+          </span>
+        </div>
+        <div class="center-align" style="margin-top: 2rem;">
+          <a href="#" class="btn-large waves-effect waves-light checkout-btn">
+            <i class="material-icons left">shopping_cart_checkout</i>
+            Checkout
+          </a>
+        </div>
+      <% } else { %>
+        <p class="center-align">Your cart is empty.</p>
+      <% } %>
+    </div>
+  </main>
 
-</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 </html>
