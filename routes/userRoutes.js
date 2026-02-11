@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/user/Medcines', authenticate, authorizeRole('USER', 'ADMIN'), userController.listUserMeds);
 router.get('/viewDetails/:id', userController.viewDetails);
 router.get('/cart', authenticate, authorizeRole('USER'), userController.showCart);
-router.post('/cart/addfrominventory/:medid', authenticate, authorizeRole('USER'), userController.addFromInventory);
+router.post('/cart/addfrominvetory/:medid', authenticate, authorizeRole('USER'), userController.addFromInventory);
 router.post('/cart/add/:medid', authenticate, authorizeRole('USER'), userController.addToCart);
 router.post('/cart/delete/:id', authenticate, authorizeRole('USER', 'ADMIN'), userController.deleteFromCart);
 
