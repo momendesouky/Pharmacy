@@ -65,6 +65,37 @@ const addToCart = async (req, res) => {
     }
 
     await userCart.save();
+    res.json({ sucsess: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ sucsess: false });
+  }
+};
+
+const addFromInventory = async (req, res) => {
+  try {
+    const medId = req.params.medid;
+    const username = req.user.username;
+    let userCart = await Cart.findOne({ username });
+
+    if (!userCart) {
+      userCart = new Cart({
+        username,
+        items: [{ medId, quantity: 1 }],
+        totalQuantity: 1,
+      });
+    } else {
+      const existingItem = userCart.items.find((item) => item.medId && item.medId.toString() === medId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        userCart.items.push({ medId, quantity: 1 });
+      }
+
+      userCart.totalQuantity = userCart.items.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    await userCart.save();
     res.redirect('/cart');
   } catch (err) {
     console.error(err);
@@ -73,27 +104,36 @@ const addToCart = async (req, res) => {
 };
 
 const deleteFromCart = async (req, res) => {
-  const medId = req.params.id;
-  const username = req.user.username;
-  const userCart = await Cart.findOne({ username });
+  try {
+    const medId = req.params.id;
+    const username = req.user.username;
+    const userCart = await Cart.findOne({ username });
 
-  const existingItem = userCart.items.find((item) => item.medId && item.medId.toString() === medId);
-  if (existingItem) {
-    if (existingItem.quantity > 1) {
-      existingItem.quantity -= 1;
-    } else {
-      userCart.items = userCart.items.filter((item) => item.medId.toString() !== medId);
+    if (userCart) {
+      const existingItem = userCart.items.find((item) => item.medId && item.medId.toString() === medId);
+      if (existingItem) {
+        if (existingItem.quantity > 1) {
+          existingItem.quantity -= 1;
+        } else {
+          userCart.items = userCart.items.filter((item) => item.medId.toString() !== medId);
+        }
+        userCart.totalQuantity = userCart.items.reduce((sum, item) => sum + item.quantity, 0);
+        await userCart.save();
+      }
     }
-    await userCart.save();
-  }
 
-  res.redirect('/cart');
+    res.json({ sucsess: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ sucsess: false });
+  }
 };
 
 module.exports = {
   listUserMeds,
   viewDetails,
   showCart,
+  addFromInventory,
   addToCart,
   deleteFromCart,
 };
