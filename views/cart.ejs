@@ -137,16 +137,12 @@
                 <td>$<%= subtotal.toFixed(2) %></td>
                 <td>
                   <div class="qty-actions">
-                    <form action="/cart/add/<%= med._id %>" method="POST" style="display: inline;">
-                      <button class="qty-btn plus" title="Add one" type="submit">
-                        <i class="material-icons tiny">add</i>&nbsp;Add
-                      </button>
-                    </form>
-                    <form action="/cart/delete/<%= med._id %>" method="POST" style="display: inline;">
-                      <button class="qty-btn minus" title="Remove one" type="submit">
-                        <i class="material-icons tiny">remove</i>&nbsp;Remove
-                      </button>
-                    </form>
+                    <button class="qty-btn plus" title="Add one" type="button" onclick="updateCart('/cart/add/<%= med._id %>')">
+                      <i class="material-icons tiny">add</i>&nbsp;Add
+                    </button>
+                    <button class="qty-btn minus" title="Remove one" type="button" onclick="updateCart('/cart/delete/<%= med._id %>')">
+                      <i class="material-icons tiny">remove</i>&nbsp;Remove
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -172,5 +168,18 @@
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    const updateCart = async (url) => {
+      try {
+        const response = await fetch(url, { method: 'POST' });
+        const data = await response.json();
+        if (data && data.sucsess) {
+          location.reload();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  </script>
 </body>
 </html>
