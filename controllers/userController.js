@@ -72,6 +72,38 @@ const addToCart = async (req, res) => {
   }
 };
 
+
+const addFromInventory = async (req, res) => {
+  try {
+    const medId = req.params.medid;
+    const username = req.user.username;
+    let userCart = await Cart.findOne({ username });
+
+    if (!userCart) {
+      userCart = new Cart({
+        username,
+        items: [{ medId, quantity: 1 }],
+        totalQuantity: 1,
+      });
+    } else {
+      const existingItem = userCart.items.find((item) => item.medId && item.medId.toString() === medId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        userCart.items.push({ medId, quantity: 1 });
+      }
+
+      userCart.totalQuantity = userCart.items.reduce((sum, item) => sum + item.quantity, 0);
+    }
+
+    await userCart.save();
+    res.redirect('/user/Medcines');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Failed to add item to cart.');
+  }
+};
+
 const deleteFromCart = async (req, res) => {
   const medId = req.params.id;
   const username = req.user.username;
@@ -94,6 +126,7 @@ module.exports = {
   listUserMeds,
   viewDetails,
   showCart,
+  addFromInventory,
   addToCart,
   deleteFromCart,
 };
