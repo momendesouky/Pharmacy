@@ -1,38 +1,14 @@
-const express=require("express");
-const app=express();
-const mongoose=require("mongoose");
-const cors=require("cors");
-const bcrypt=require("bcryptjs");
-const jwt=require("jsonwebtoken");
-const cookie=require("cookie-parser");
-require("dotenv").config();
-const User=require("./models/User");
-const Med=require("./models/medcine");
-const cart=require("./models/Cart");
-const authorizeRole = require("./middlewares/authorizeRoles");
-const authenticate=require("./middlewares/Authenticate");
-app.use(cors());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(cookie());
-app.use('/uploads', express.static('uploads'));
-const multer = require("multer");
-const path = require("path");
-const { error } = require("console");
-// Storage config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Folder to save
-  },
-  filename: (req, file, cb) => {
-    const ext=file.mimetype.split("/")[1];
-    const filename = `Photo-${Date.now()}.${ext}`;
-    cb(null, filename); 
-  },
+require('dotenv').config();
+
+const app = require('./app');
+const connectDb = require('./config/db');
+
+connectDb();
+
+app.listen(process.env.port, () => {
+  console.log('Iam connected on port 8000');
 });
-
 const upload = multer({ storage });
-
 mongoose.connect(process.env.mongoUrl).then(()=>{
 console.log("connected");
 }).catch(()=>{
@@ -259,3 +235,4 @@ app.get("/logout",(req,res)=>{
 app.listen(process.env.port,()=>{
     console.log("Iam connected on port 8000");
 })
+
