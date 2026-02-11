@@ -2,194 +2,311 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- ✅ MOBILE FIX -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to PharmaPlus</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --brand: #1abc9c;
+      --brand-dark: #148f77;
+      --bg-start: #e0f7fa;
+      --bg-end: #ffffff;
+      --text: #2c3e50;
+      --card: #ffffff;
     }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #e0f7fa, #ffffff);
-      color: #2c3e50;
+      background: linear-gradient(to right, var(--bg-start), var(--bg-end));
+      color: var(--text);
+      transition: background-color 0.3s ease, color 0.3s ease;
       overflow-x: hidden;
     }
 
-    header {
-      background-color: #1abc9c;
-      color: white;
-      padding: 1.5rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      animation: slideDown 1s ease forwards;
+    body.dark {
+      --bg-start: #0f172a;
+      --bg-end: #111827;
+      --text: #e5e7eb;
+      --card: #1f2937;
     }
 
-    header h1 {
-      font-size: 2rem;
-    }
-
-    nav a {
-      color: white;
-      margin-left: 1.5rem;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s;
-    }
-
-    nav a:hover {
-      color: #f0f0f0;
+    nav {
+      background-color: var(--brand);
     }
 
     .hero {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      padding: 3rem;
+      padding: 4rem 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 2rem;
-      flex-wrap: wrap; /* ✅ wrap for smaller screens */
-      animation: fadeIn 1.5s ease-in-out;
+      align-items: center;
     }
 
-    .hero-text {
-      max-width: 600px;
-      flex: 1;
-    }
-
-    .hero h2 {
-      font-size: 2.5rem;
+    .hero-title {
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 600;
       margin-bottom: 1rem;
-      animation: slideUp 1s ease forwards;
     }
 
-    .hero p {
+    .hero-subtitle {
+      color: color-mix(in srgb, var(--text) 70%, #ffffff 30%);
       font-size: 1.1rem;
       margin-bottom: 2rem;
-      color: #555;
-      animation: fadeIn 2s ease forwards;
     }
 
-    .hero img {
-      width: 400px;
-      max-width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      animation: popIn 1.5s ease forwards;
-      flex: 1;
+    .hero-visual {
+      height: 320px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(26, 188, 156, 0.15), rgba(20, 143, 119, 0.35));
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
 
-    .cta {
-      background-color: #1abc9c;
-      color: white;
-      padding: 0.9rem 1.6rem;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.75;
+      animation: drift 8s ease-in-out infinite;
+    }
+
+    .blob.one {
+      width: 180px;
+      height: 180px;
+      background: #1abc9c;
+      top: 20px;
+      left: 30px;
+    }
+
+    .blob.two {
+      width: 140px;
+      height: 140px;
+      background: #148f77;
+      bottom: 30px;
+      right: 20px;
+      animation-delay: 1s;
+    }
+
+    .blob.three {
+      width: 110px;
+      height: 110px;
+      background: #48c9b0;
+      top: 90px;
+      right: 90px;
+      animation-delay: 2s;
+    }
+
+    .pulse-ring {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 220px;
+      height: 220px;
+      border: 2px solid rgba(26, 188, 156, 0.45);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 2.8s ease-out infinite;
+    }
+
+    .hero-icon {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      color: #0f766e;
+      text-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    #hero-particles {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.55;
+    }
+
+    .hero-visual > *:not(#hero-particles) {
+      position: relative;
+      z-index: 2;
+    }
+
+    .feature-card {
+      border-radius: 16px;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      background: var(--card);
+    }
+
+    .feature-card i {
+      color: var(--brand);
+    }
+
+    .cta-btn {
+      background-color: var(--brand);
+    }
+
+    .cta-btn:hover {
+      background-color: var(--brand-dark);
+    }
+
+    .mode-toggle {
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      text-decoration: none;
-    }
-
-    .cta:hover {
-      background-color: #17a689;
     }
 
     footer {
+      padding: 2rem 0;
       text-align: center;
-      padding: 1.5rem;
-      background: #f4f4f4;
-      color: #888;
-      margin-top: 4rem;
+      color: color-mix(in srgb, var(--text) 60%, #9ca3af 40%);
     }
 
-    /* 🎯 Responsive Layout */
-    @media (max-width: 768px) {
-      .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 2rem;
-      }
-
-      .hero-text {
-        max-width: 100%;
-      }
-
-      .hero h2 {
-        font-size: 2rem;
-      }
-
-      .hero p {
-        font-size: 1rem;
-      }
-
-      header {
-        padding: 1rem;
-        flex-direction: column;
-        text-align: center;
-      }
-
-      nav {
-        margin-top: 1rem;
-      }
-
-      nav a {
-        margin: 0 1rem;
-      }
+    @keyframes drift {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-14px) scale(1.08); }
     }
 
-    /* Animations */
-    @keyframes slideDown {
-      from { transform: translateY(-100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes popIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    @keyframes pulse {
+      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h1><span>💊</span>PharmaPlus</h1>
-    <nav>
-      <a href="/login">Login</a>
-      <a href="/signup">Sign Up</a>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <div class="hero-text">
-      <h2>Your Trusted Pharmacy</h2>
-      <p>Discover a wide range of safe, effective medicines delivered to your door. Easy browsing, secure checkout, and professional support — all in one place.</p>
-      <a class="cta" href="/signup">Sign Up and Shop Now</a>
+  <nav>
+    <div class="nav-wrapper container">
+      <a href="/" class="brand-logo">💊 PharmaPlus</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/login">Login</a></li>
+        <li><a href="/signup">Sign Up</a></li>
+        <li>
+          <a href="#" id="theme-toggle" class="mode-toggle"><i class="material-icons tiny">dark_mode</i><span>Dark</span></a>
+        </li>
+      </ul>
     </div>
-    <img src="/uploads/closeup-view-pharmacist-hand-taking-medicine-box-from-shelf-drug-store.jpg" alt="Pharmacy illustration">
-  </section>
+  </nav>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1 class="hero-title">Modern pharmacy care at your fingertips.</h1>
+        <p class="hero-subtitle">Discover verified medicines, manage prescriptions, and order with confidence using a clean, friendly experience.</p>
+        <a href="/login" class="btn-large waves-effect waves-light cta-btn">
+          <i class="material-icons left">local_pharmacy</i>
+          Get Started
+        </a>
+      </div>
+      <div class="hero-visual">
+        <canvas id="hero-particles"></canvas>
+        <span class="blob one"></span>
+        <span class="blob two"></span>
+        <span class="blob three"></span>
+        <span class="pulse-ring"></span>
+        <i class="material-icons hero-icon">health_and_safety</i>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="feature-card">
+            <i class="material-icons medium">verified_user</i>
+            <div>
+              <h5>Trusted inventory</h5>
+              <p>All medicines are verified, clearly labeled, and updated for safety.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6">
+          <div class="feature-card">
+            <i class="material-icons medium">speed</i>
+            <div>
+              <h5>Fast checkout</h5>
+              <p>Manage your cart, review totals, and complete orders in seconds.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    &copy; 2025 PharmaPlus. All rights reserved.
+    Built with care for PharmaPlus customers.
   </footer>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+    const label = themeToggle.querySelector('span');
+    const icon = themeToggle.querySelector('i');
+
+    function syncThemeLabel() {
+      const dark = body.classList.contains('dark');
+      label.textContent = dark ? 'Light' : 'Dark';
+      icon.textContent = dark ? 'light_mode' : 'dark_mode';
+    }
+
+    themeToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      body.classList.toggle('dark');
+      syncThemeLabel();
+    });
+
+    const canvas = document.getElementById('hero-particles');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function sizeCanvas() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    }
+
+    function initParticles() {
+      particles = Array.from({ length: 32 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.7,
+        vy: (Math.random() - 0.5) * 0.7,
+        r: Math.random() * 2.3 + 1.2
+      }));
+    }
+
+    function tickParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 118, 110, 0.7)';
+        ctx.fill();
+      }
+      requestAnimationFrame(tickParticles);
+    }
+
+    window.addEventListener('resize', () => {
+      sizeCanvas();
+      initParticles();
+    });
+
+    sizeCanvas();
+    initParticles();
+    tickParticles();
+    syncThemeLabel();
+  </script>
 </body>
 </html>
