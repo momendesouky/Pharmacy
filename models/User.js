@@ -9,6 +9,10 @@ const user=new Schema({
         enum:["ADMIN","USER"],
         default:"USER"
     },
+    cart: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Cart' 
+  }
 })
 const User=mongoose.model("User",user);
 module.exports= User;

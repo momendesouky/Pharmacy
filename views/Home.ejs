@@ -3,326 +3,469 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to PharmaPlus</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>PharmaPlus | Next Gen Care</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  
   <style>
+    /* --- 1. CORE VARIABLES & RESET --- */
     :root {
-      --brand: #1abc9c;
-      --brand-dark: #148f77;
-      --bg-start: #e0f7fa;
-      --bg-end: #ffffff;
-      --text: #2c3e50;
-      --card: #ffffff;
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --accent: #2dd4bf;
+      --bg: #f0fdfa;
+      --surface: #ffffff;
+      --text-main: #134e4a;
+      --text-muted: #64748b;
+      --border: #ccfbf1;
+      --shadow: 0 10px 40px -10px rgba(13, 148, 136, 0.15);
+      --glass: rgba(255, 255, 255, 0.7);
+      --nav-height: 80px;
     }
 
+    /* Dark Mode Overrides */
+    [data-theme="dark"] {
+      --primary: #2dd4bf;
+      --primary-dark: #14b8a6;
+      --accent: #0d9488;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --text-main: #f0fdfa;
+      --text-muted: #94a3b8;
+      --border: #334155;
+      --shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+      --glass: rgba(30, 41, 59, 0.7);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, var(--bg-start), var(--bg-end));
-      color: var(--text);
-      transition: background-color 0.3s ease, color 0.3s ease;
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      transition: background 0.3s ease, color 0.3s ease;
       overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    body.dark {
-      --bg-start: #0f172a;
-      --bg-end: #111827;
-      --text: #e5e7eb;
-      --card: #1f2937;
-      background: linear-gradient(to right, #e0f7fa, #ffffff);
-      color: #2c3e50;
-    }
-    nav {
-      background-color: var(--brand);
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+    ul { list-style: none; }
+
+    /* --- 2. LAYOUT UTILITIES --- */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
     }
 
-    .hero {
-      padding: 4rem 0 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white; /* Always white text on button */
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);
+    }
+
+    [data-theme="dark"] .btn-primary { color: #0f172a; }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(13, 148, 136, 0.6);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* --- 3. NAVIGATION (Responsive) --- */
+    header {
+      height: var(--nav-height);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
       align-items: center;
     }
 
-    .hero-title {
-      font-size: clamp(2rem, 3vw, 3rem);
-      font-weight: 600;
+    .nav-links a {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--primary);
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-btn { display: none; cursor: pointer; }
+
+    /* --- 4. HERO SECTION (Split Layout) --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: var(--nav-height);
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--text-main) 0%, var(--primary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-content p {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* --- 5. 3D VISUAL ELEMENT (Pure CSS) --- */
+    .hero-visual {
+      position: relative;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+    }
+
+    .floating-card {
+      width: 300px;
+      height: 420px;
+      background: linear-gradient(135deg, var(--surface), var(--bg));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      position: absolute;
+      box-shadow: var(--shadow);
+      transform-style: preserve-3d;
+      animation: float 6s ease-in-out infinite;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      justify-content: space-between;
+    }
+
+    .card-glass-layer {
+      position: absolute;
+      inset: 20px;
+      background: rgba(13, 148, 136, 0.05);
+      border-radius: 16px;
+      transform: translateZ(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+    }
+
+    .pill-icon {
+      font-size: 4rem;
+      color: var(--primary);
       margin-bottom: 1rem;
     }
 
-    .hero-subtitle {
-      color: color-mix(in srgb, var(--text) 70%, #ffffff 30%);
-      color: #566573;
-      font-size: 1.1rem;
-      margin-bottom: 2rem;
-    }
-    .hero-visual {
-      height: 320px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, rgba(26, 188, 156, 0.15), rgba(20, 143, 119, 0.35));
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .blob {
+    .card-badges {
       position: absolute;
-      border-radius: 50%;
-      opacity: 0.75;
-      animation: drift 8s ease-in-out infinite;
-    }
-
-    .blob.one {
-      width: 180px;
-      height: 180px;
-      background: #1abc9c;
-      top: 20px;
-      left: 30px;
-    }
-
-    .blob.two {
-      width: 140px;
-      height: 140px;
-      background: #148f77;
-      bottom: 30px;
-      right: 20px;
-      animation-delay: 1s;
-    }
-
-    .blob.three {
-      width: 110px;
-      height: 110px;
-      background: #48c9b0;
-      top: 90px;
-      right: 90px;
-      animation-delay: 2s;
-    }
-
-    .pulse-ring {
-      position: absolute;
-      inset: 50% auto auto 50%;
-      width: 220px;
-      height: 220px;
-      border: 2px solid rgba(26, 188, 156, 0.45);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      animation: pulse 2.8s ease-out infinite;
-    }
-
-    .hero-icon {
-      position: absolute;
-      inset: 50% auto auto 50%;
-      transform: translate(-50%, -50%);
-      font-size: 4rem;
-      color: #0f766e;
-      text-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    #hero-particles {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      opacity: 0.55;
-    }
-
-    .hero-visual > *:not(#hero-particles) {
-      position: relative;
-      z-index: 2;
-    }
-    .hero-image {
-      width: 100%;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-      transform: translateY(0);
-      animation: float 6s ease-in-out infinite;
-    }
-    .feature-card {
-      border-radius: 16px;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-      padding: 2rem;
+      top: 50%;
+      right: -40px;
       display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      background: var(--card);
-      background: #fff;
-
+      flex-direction: column;
+      gap: 12px;
+      transform: translateZ(50px) translateY(-50%);
     }
 
-    .feature-card i {
-      color: var(--brand);
-    }
-
-    .cta-btn {
-      background-color: var(--brand);
-    }
-    .cta-btn:hover {
-      background-color: var(--brand-dark);
-    }
-
-    .mode-toggle {
-      background: rgba(255, 255, 255, 0.22);
-      border-radius: 999px;
-      padding: 0 10px;
-      display: inline-flex;
+    .badge {
+      background: var(--surface);
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
       align-items: center;
-      gap: 4px;
-      cursor: pointer;
+      gap: 8px;
+      color: var(--text-main);
+      border: 1px solid var(--border);
     }
 
-    footer {
-      padding: 2rem 0;
-      text-align: center;
-      color: color-mix(in srgb, var(--text) 60%, #9ca3af 40%);
+    .badge i { color: var(--accent); }
+
+    /* --- 6. FEATURE GRID --- */
+    .features {
+      padding: 4rem 0;
     }
 
-    @keyframes drift {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-14px) scale(1.08); }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
     }
 
-    @keyframes pulse {
-      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.9; }
-      100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
-      color: #8e9eab;
+    .feature-card {
+      background: var(--surface);
+      padding: 2rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      transition: 0.3s;
     }
 
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+      border-color: var(--primary);
+    }
+
+    .icon-box {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: rgba(13, 148, 136, 0.1);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+
+    /* --- 7. RESPONSIVENESS --- */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 3rem;
+      }
+      
+      .hero-content p, .hero-actions {
+        margin-left: auto;
+        margin-right: auto;
+        justify-content: center;
+      }
+
+      .floating-card {
+        width: 260px;
+        height: 380px;
+      }
+      
+      .card-badges {
+        right: -20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        flex-direction: column;
+        padding: 2rem;
+        border-bottom: 1px solid var(--border);
+        transform: translateY(-150%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      .nav-links.open { transform: translateY(0); }
+      .menu-btn { display: block; color: var(--text-main); }
+    }
+
+    /* --- ANIMATIONS --- */
     @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-12px);
-      }
+      0%, 100% { transform: translateY(0) rotateY(-5deg); }
+      50% { transform: translateY(-20px) rotateY(5deg); }
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-wrapper container">
-      <a href="/" class="brand-logo">💊 PharmaPlus</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+  <header>
+    <div class="container nav-container">
+      <a href="#" class="logo">
+        <i class="material-icons-round">medication</i> PharmaPlus
+      </a>
+      
+      <div class="menu-btn" id="menuBtn">
+        <i class="material-icons-round">menu</i>
+      </div>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/" class="active">Home</a></li>
         <li><a href="/login">Login</a></li>
-        <li><a href="/signup">Sign Up</a></li>
-        <li>
-          <a href="#" id="theme-toggle" class="mode-toggle"><i class="material-icons tiny">dark_mode</i><span>Dark</span></a>
+        <li><a href="/signup">SignUp</a></li>
+          <div class="btn btn-primary" id="themeToggle" style="padding: 8px 16px;">
+            <i class="material-icons-round" style="font-size: 1.2rem">dark_mode</i>
+          </div>
         </li>
       </ul>
     </div>
-  </nav>
-  <main class="container">
+  </header>
+
+  <main>
     <section class="hero">
-      <div>
-        <h1 class="hero-title">Modern pharmacy care at your fingertips.</h1>
-        <p class="hero-subtitle">Discover verified medicines, manage prescriptions, and order with confidence using a clean, friendly experience.</p>
-        <a href="/login" class="btn-large waves-effect waves-light cta-btn">
-          <i class="material-icons left">local_pharmacy</i>
-          Get Started
-        </a>
-      </div>
-      <div class="hero-visual">
-        <canvas id="hero-particles"></canvas>
-        <span class="blob one"></span>
-        <span class="blob two"></span>
-        <span class="blob three"></span>
-        <span class="pulse-ring"></span>
-        <i class="material-icons hero-icon">health_and_safety</i>
-      <div>
-        <img class="hero-image" src="https://images.unsplash.com/photo-1580281658629-20b3f4c3a1c9?auto=format&fit=crop&w=800&q=80" alt="Pharmacy shelves">
-      </div>
-    </section>
-    <section class="section">
-      <div class="row">
-        <div class="col s12 m6">
-          <div class="feature-card">
-            <i class="material-icons medium">verified_user</i>
-            <div>
-              <h5>Trusted inventory</h5>
-              <p>All medicines are verified, clearly labeled, and updated for safety.</p>
+      <div class="container hero-grid">
+        <div class="hero-content">
+          <h1>Pharmacy care, <br>simplified for you.</h1>
+          <p>Skip the pharmacy lines. Manage prescriptions, order refills, and chat with pharmacists—all from your phone.</p>
+          <div class="hero-actions">
+            <a href="/signup" class="btn btn-primary">
+              Order Now <i class="material-icons-round">arrow_forward</i>
+            </a>
+            <a href="#" class="btn btn-outline">
+              <i class="material-icons-round">upload_file</i> Upload Rx
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="floating-card">
+            <div class="card-glass-layer">
+              <i class="material-icons-round pill-icon">vaccines</i>
+              <h3 style="margin-top: 10px;">Refill Due</h3>
+              <small style="color: var(--text-muted)">Amoxicillin 500mg</small>
+            </div>
+            <div class="card-badges">
+              <div class="badge">
+                <i class="material-icons-round">verified</i> FDA Approved
+              </div>
+              <div class="badge">
+                <i class="material-icons-round">local_shipping</i> Free Delivery
+              </div>
             </div>
           </div>
         </div>
-        <div class="col s12 m6">
-          <div class="feature-card">
-            <i class="material-icons medium">speed</i>
-            <div>
-              <h5>Fast checkout</h5>
-              <p>Manage your cart, review totals, and complete orders in seconds.</p>
-            </div>
-          </div>
+      </div>
+    </section>
+
+    <section class="features container">
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="icon-box"><i class="material-icons-round">inventory_2</i></div>
+          <h3>Smart Inventory</h3>
+          <p style="color: var(--text-muted)">Real-time stock checks so you never order out-of-stock items.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-box"><i class="material-icons-round">alarm_on</i></div>
+          <h3>Auto-Refills</h3>
+          <p style="color: var(--text-muted)">Set it and forget it. We ship your meds before you run out.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon-box"><i class="material-icons-round">privacy_tip</i></div>
+          <h3>Private & Secure</h3>
+          <p style="color: var(--text-muted)">HIPAA compliant data handling to keep your health info safe.</p>
         </div>
       </div>
     </section>
   </main>
-  <footer>
-    Built with care for PharmaPlus customers.
-  </footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
   <script>
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    const label = themeToggle.querySelector('span');
+    // 1. Mobile Menu Toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    menuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      const icon = menuBtn.querySelector('i');
+      icon.textContent = navLinks.classList.contains('open') ? 'close' : 'menu';
+    });
+
+    // 2. Dark Mode Toggle with Local Storage
+    const themeToggle = document.getElementById('themeToggle');
     const icon = themeToggle.querySelector('i');
-    function syncThemeLabel() {
-      const dark = body.classList.contains('dark');
-      label.textContent = dark ? 'Light' : 'Dark';
-      icon.textContent = dark ? 'light_mode' : 'dark_mode';
+    
+    function setTheme(isDark) {
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+      icon.textContent = isDark ? 'light_mode' : 'dark_mode';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
 
-    themeToggle.addEventListener('click', (e) => {
-      e.preventDefault();
-      body.classList.toggle('dark');
-      syncThemeLabel();
+    // Check saved preference
+    const savedTheme = localStorage.getItem('theme') === 'dark';
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      setTheme(!isDark);
     });
 
-    const canvas = document.getElementById('hero-particles');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
+    // 3. 3D Tilt Effect on Hero Card
+    const card = document.querySelector('.floating-card');
+    const container = document.querySelector('.hero-visual');
 
-    function sizeCanvas() {
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
-    }
-
-    function initParticles() {
-      particles = Array.from({ length: 32 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.7,
-        vy: (Math.random() - 0.5) * 0.7,
-        r: Math.random() * 2.3 + 1.2
-      }));
-    }
-
-    function tickParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (const p of particles) {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(15, 118, 110, 0.7)';
-        ctx.fill();
-      }
-      requestAnimationFrame(tickParticles);
-    }
-
-    window.addEventListener('resize', () => {
-      sizeCanvas();
-      initParticles();
+    container.addEventListener('mousemove', (e) => {
+      if (window.innerWidth < 900) return; // Disable on mobile
+      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+      card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
     });
 
-    sizeCanvas();
-    initParticles();
-    tickParticles();
-    syncThemeLabel();
+    container.addEventListener('mouseleave', () => {
+      card.style.transform = `rotateY(0deg) rotateX(0deg)`; // Reset
+      card.style.transition = "transform 0.5s ease"; // Smooth reset
+    });
+
+    container.addEventListener('mouseenter', () => {
+      card.style.transition = "none"; // Remove transition for instant follow
+    });
+
   </script>
 </body>
 </html>

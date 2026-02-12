@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | PharmaPlus</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <style>
+    :root {
+      --primary: #0d9488;
+      --primary-dark: #0f766e;
+      --bg-body: #f3f4f6;
+      --bg-surface: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+    }
+
+    /* Simple Navbar for Checkout (Distraction Free) */
+    nav {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      height: 70px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .brand {
+      font-size: 1.25rem; font-weight: 700; color: var(--primary);
+      display: flex; align-items: center; gap: 8px; text-decoration: none;
+    }
+
+    /* Layout */
+    .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+    
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 32px;
+    }
+
+    h2 { font-size: 1.25rem; margin-bottom: 24px; font-weight: 600; }
+    h3 { font-size: 1.1rem; margin-bottom: 16px; font-weight: 600; color: var(--text-muted); }
+
+    /* Form Styles */
+    .form-group { margin-bottom: 20px; }
+    
+    label {
+      display: block; font-size: 0.9rem; font-weight: 500;
+      color: var(--text-main); margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%; padding: 12px; border-radius: 8px;
+      border: 1px solid var(--border); font-family: inherit;
+      transition: 0.2s;
+    }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; }
+
+    /* Summary Styles */
+    .summary-item {
+      display: flex; justify-content: space-between;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .summary-item:last-child { border-bottom: none; }
+    
+    .item-meta { display: flex; flex-direction: column; }
+    .item-name { font-weight: 500; }
+    .item-qty { font-size: 0.85rem; color: var(--text-muted); }
+
+    .total-row {
+      display: flex; justify-content: space-between;
+      margin-top: 24px; padding-top: 24px; border-top: 2px solid var(--border);
+      font-weight: 700; font-size: 1.2rem;
+    }
+
+    /* Button */
+    .btn-pay {
+      width: 100%; background: var(--primary); color: white;
+      padding: 16px; border: none; border-radius: 8px;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      margin-top: 24px; transition: 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-pay:hover { background: var(--primary-dark); }
+
+    @media (max-width: 768px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+      .checkout-grid > :nth-child(2) { order: -1; } /* Show summary first on mobile */
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/cart" class="brand">
+      <i class="ph-fill ph-lock-key"></i> Secure Checkout
+    </a>
+  </nav>
+
+  <div class="container">
+    <form action="/checkout" method="POST" class="checkout-grid">
+      
+      <div class="card">
+        <div style="margin-bottom: 40px;">
+          <h2><i class="ph ph-map-pin"></i> Shipping Address</h2>
+          
+          <div class="form-group">
+            <label>Full Address</label>
+            <input type="text" name="address" placeholder="123 Wellness Street" required>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" name="city" placeholder="New York" required>
+            </div>
+            <div class="form-group">
+              <label>ZIP / Postal Code</label>
+              <input type="text" name="zip" placeholder="10001" required>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2><i class="ph ph-credit-card"></i> Payment Method</h2>
+          
+          <div class="form-group">
+            <label>Name on Card</label>
+            <input type="text" name="cardName" placeholder="John Doe" required>
+          </div>
+
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" placeholder="0000 0000 0000 0000" maxlength="19" required>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" placeholder="MM/YY" maxlength="5" required>
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" placeholder="123" maxlength="3" required>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background: #fafafa;">
+        <h2>Order Summary</h2>
+        
+        <div class="summary-list">
+          <% cartItems.forEach(item => { %>
+            <div class="summary-item">
+              <div class="item-meta">
+                <span class="item-name"><%= item.medId.name %></span>
+                <span class="item-qty">Qty: <%= item.quantity %></span>
+              </div>
+              <span>$<%= (item.medId.price * item.quantity).toFixed(2) %></span>
+            </div>
+          <% }) %>
+        </div>
+
+        <div class="total-row">
+          <span>Total to Pay</span>
+          <span style="color: var(--primary);">$<%= total.toFixed(2) %></span>
+        </div>
+        <form method="post" action="/checkout">
+        <button type="submit" class="btn-pay">
+          <i class="ph-bold ph-lock-simple"></i> Pay Now
+        </button>
+        </form>
+
+        <p style="text-align: center; margin-top: 16px; font-size: 0.8rem; color: var(--text-muted);">
+          <i class="ph-fill ph-shield-check"></i> 100% Secure Payment
+        </p>
+      </div>
+
+    </form>
+  </div>
+
+</body>
+</html>

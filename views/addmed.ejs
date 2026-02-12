@@ -1,107 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Medicine</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Medicine | PharmaPlus</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
   <style>
+    /* --- THEME (Identical to your Dashboard) --- */
     :root {
-      --brand: #1abc9c;
-      --brand-dark: #148f77;
+      --primary: #0d9488;
+      --primary-soft: #f0fdfa;
+      --bg-body: #f3f4f6;
+      --bg-surface: #ffffff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --danger: #ef4444;
+      --sidebar-width: 260px;
     }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
 
     body {
-      background-color: #f4f6f8;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+      display: flex;
+      min-height: 100vh;
     }
 
-    nav {
-      background-color: var(--brand);
+    /* --- SIDEBAR --- */
+    aside {
+      width: var(--sidebar-width);
+      background: var(--bg-surface);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
     }
 
-    .card-panel {
-      border-radius: 16px;
-      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.08);
-      animation: slideIn 0.6s ease;
+    .brand {
+      font-size: 1.25rem; font-weight: 700; color: var(--primary);
+      display: flex; align-items: center; gap: 10px; margin-bottom: 40px;
+      text-decoration: none;
     }
 
-    .btn {
-      background-color: var(--brand);
+    .nav-menu { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+    .nav-link {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 16px; color: var(--text-muted);
+      text-decoration: none; border-radius: 8px; font-weight: 500;
+      transition: all 0.2s;
     }
 
-    .btn:hover {
-      background-color: var(--brand-dark);
+    .nav-link:hover, .nav-link.active { background: var(--primary-soft); color: var(--primary); }
+    .nav-link.active { font-weight: 600; }
+    
+    .nav-footer { margin-top: auto; }
+
+    /* --- MAIN AREA --- */
+    main { margin-left: var(--sidebar-width); flex: 1; padding: 32px 40px; max-width: 1600px; }
+
+    .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+    .page-title { font-size: 1.8rem; font-weight: 700; }
+
+    /* --- FORM CONTAINER (Matches your table-container) --- */
+    .content-container {
+      background: var(--bg-surface); border-radius: 12px;
+      border: 1px solid var(--border); overflow: hidden;
     }
 
-    .input-field input:focus + label {
-      color: var(--brand) !important;
+    .container-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+      background: #f9fafb;
     }
 
-    .input-field input:focus {
-      border-bottom: 1px solid var(--brand) !important;
-      box-shadow: 0 1px 0 0 var(--brand) !important;
+    .form-body { padding: 32px 24px; display: flex; gap: 40px; }
+
+    /* --- IMAGE PREVIEW SECTION --- */
+    .image-upload-zone {
+      width: 320px; flex-shrink: 0;
     }
 
-    @keyframes slideIn {
-      from { transform: translateY(16px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .preview-box {
+      width: 100%; height: 320px; background: #f8fafc;
+      border: 2px dashed var(--border); border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; margin-bottom: 16px;
+    }
+
+    #preview-img { width: 100%; height: 100%; object-fit: contain; display: none; }
+    .placeholder-text { text-align: center; color: var(--text-muted); }
+
+    /* --- INPUT STYLES --- */
+    .form-inputs { flex: 1; display: flex; flex-direction: column; gap: 24px; }
+
+    .input-group { display: flex; flex-direction: column; gap: 8px; }
+    label { font-size: 0.85rem; font-weight: 600; color: var(--text-main); }
+    
+    input {
+      padding: 12px 16px; border: 1px solid var(--border);
+      border-radius: 8px; font-family: inherit; font-size: 0.95rem;
+      transition: 0.2s;
+    }
+
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.1); }
+
+    .row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    /* --- BUTTONS --- */
+    .btn-primary {
+      background: var(--primary); color: white; border: none;
+      padding: 14px 28px; border-radius: 8px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 10px;
+      transition: 0.2s;
+    }
+
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .btn-browse {
+      background: white; border: 1px solid var(--border); padding: 10px;
+      border-radius: 8px; width: 100%; cursor: pointer; text-align: center;
+      display: inline-block; font-weight: 500; font-size: 0.9rem;
+    }
+    .btn-browse:hover { background: #f9fafb; }
+
+    .avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem;
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-wrapper container">
-      <a href="/admin/Medcines" class="brand-logo">💊 Pharmacy</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="/admin/Medcines">View All</a></li>
-        <li><a href="/logout">Logout</a></li>
-      </ul>
-    </div>
-  </nav>
 
-  <main class="container">
-    <div class="row">
-      <div class="col s12 m10 l6 offset-m1 offset-l3">
-        <div class="card-panel white">
-          <h4 class="center-align">Add New Medicine</h4>
-          <form action="/admin/medcines/add" method="POST" enctype="multipart/form-data">
-            <div class="input-field">
-              <i class="material-icons prefix">medication</i>
-              <input id="name" type="text" name="name" required />
-              <label for="name">Medicine Name</label>
-            </div>
-            <div class="input-field">
-              <i class="material-icons prefix">science</i>
-              <input id="form" type="text" name="form" required />
-              <label for="form">Form (tablet, syrup)</label>
-            </div>
-            <div class="input-field">
-              <i class="material-icons prefix">attach_money</i>
-              <input id="price" type="number" name="price" step="0.01" required />
-              <label for="price">Price in $</label>
-            </div>
-            <div class="file-field input-field">
-              <div class="btn">
-                <span>Image</span>
-                <input type="file" name="image" accept="image/*" required />
-              </div>
-              <div class="file-path-wrapper">
-                <input class="file-path validate" type="text" placeholder="Upload medicine image" />
-              </div>
-            </div>
-            <div class="center-align">
-              <button class="btn-large waves-effect waves-light" type="submit">
-                <i class="material-icons left">add_circle</i>
-                Add Medicine
-              </button>
-            </div>
-          </form>
+  <aside>
+    <a href="/admin/Medcines" class="brand">
+      <i class="ph-fill ph-first-aid-kit" style="font-size: 24px;"></i>
+      PharmaPlus
+    </a>
+
+    <ul class="nav-menu">
+      <li><a href="/admin/Medcines" class="nav-link active"><i class="ph ph-squares-four"></i> Dashboard</a></li>
+      <li><a href="/admin/users" class="nav-link"><i class="ph ph-users"></i> Users</a></li>
+      <li><a href="#" class="nav-link"><i class="ph ph-gear"></i> Settings</a></li>
+    </ul>
+
+    <div class="nav-footer">
+      <a href="/logout" class="nav-link" style="color: var(--danger);">
+        <i class="ph ph-sign-out"></i> Logout
+      </a>
+    </div>
+  </aside>
+
+  <main>
+    
+    <div class="header-row">
+      <h1 class="page-title">Add New Medicine</h1>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="color: var(--text-muted);">Admin: <strong><%= username %></strong></span>
+        <div class="avatar">
+          <%= username.charAt(0) %>
         </div>
       </div>
     </div>
+
+    <div class="content-container">
+      <div class="container-header">
+        <i class="ph ph-plus-circle" style="color: var(--primary); font-size: 1.2rem;"></i>
+        <span style="font-weight: 600; font-size: 0.95rem;">Medicine Details</span>
+      </div>
+
+      <form action="/admin/medcines/add" method="POST" enctype="multipart/form-data" class="form-body">
+        
+        <div class="image-upload-zone">
+          <div class="preview-box" id="dropZone">
+            <div class="placeholder-text" id="placeholder">
+              <i class="ph ph-image-square" style="font-size: 3rem; margin-bottom: 8px; display: block;"></i>
+              <p style="font-size: 0.85rem;">Product Preview</p>
+            </div>
+            <img id="preview-img" src="" alt="Preview">
+          </div>
+          
+          <label class="btn-browse">
+            <i class="ph ph-upload-simple"></i> Choose Image
+            <input type="file" name="image" id="fileInput" accept="image/*" required style="display: none;">
+          </label>
+        </div>
+
+        <div class="form-inputs">
+          <div class="input-group">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter medicine name..." required>
+          </div>
+
+          <div class="row-grid">
+            <div class="input-group">
+              <label for="form">Form Type</label>
+              <input type="text" id="form" name="form" placeholder="Tablet, Syrup, etc." required>
+            </div>
+            <div class="input-group">
+              <label for="price">Unit Price ($)</label>
+              <input type="number" id="price" name="price" step="0.01" placeholder="0.00" required>
+            </div>
+          </div>
+
+          <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 15px; align-items: center;">
+            <a href="/admin/Medcines" style="text-decoration: none; color: var(--text-muted); font-size: 0.9rem; font-weight: 500;">Cancel</a>
+            <button type="submit" class="btn-primary">
+              <i class="ph ph-check-square"></i>
+              Save to Inventory
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const previewImg = document.getElementById('preview-img');
+    const placeholder = document.getElementById('placeholder');
+
+    fileInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImg.src = e.target.result;
+          previewImg.style.display = 'block';
+          placeholder.style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+
 </body>
 </html>
